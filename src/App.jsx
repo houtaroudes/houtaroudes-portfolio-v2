@@ -1,33 +1,14 @@
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
+import { Sun, Moon, ArrowUp, Envelope, Link } from "reicon-react";
 
-/* ===== Icons ===== */
 const IconGithub = ({ s = 16 }) => (
   <svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
     <path d="M9 19c-4 1.2-4-2.1-5.5-2.5M17 22v-3.2c0-.9-.3-1.5-.6-1.8 2.1-.2 4.3-1 4.3-4.7 0-1-.4-1.9-1-2.6.1-.3.4-1.3-.1-2.7 0 0-.9-.3-2.9 1a10 10 0 00-5.4 0c-2-1.3-2.9-1-2.9-1-.5 1.4-.2 2.4-.1 2.7-.6.7-1 1.6-1 2.6 0 3.7 2.2 4.5 4.3 4.7-.3.3-.5.7-.6 1.4V22" />
   </svg>
 );
-const IconMail = ({ s = 16 }) => (
-  <svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-    <rect x="3" y="5" width="18" height="14" rx="2" /><path d="M3.5 6.5L12 13l8.5-6.5" />
-  </svg>
-);
-const IconExternal = ({ s = 13 }) => (
-  <svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6" /><polyline points="15 3 21 3 21 9" /><line x1="10" y1="14" x2="21" y2="3" />
-  </svg>
-);
-
-const IconSun = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
-  </svg>
-);
-const IconMoon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-  </svg>
-);
+import PixelTransition from "./components/PixelTransition";
+import "./components/PixelTransition.css";
 
 /* ===== Data ===== */
 const projects = [
@@ -112,68 +93,38 @@ function useCountUp(target, duration = 1500) {
   return { count, ref };
 }
 
-/* ===== 3D Tilt Profile Picture ===== */
+/* ===== Components ===== */
 function ProfilePicture() {
-  const wrapperRef = useRef(null);
-  const [tilt, setTilt] = useState({ x: 0, y: 0 });
-  const [glare, setGlare] = useState({ x: 50, y: 50 });
-  const [isHovered, setIsHovered] = useState(false);
-  const frameRef = useRef(null);
-
-  const handleMouseMove = useCallback((e) => {
-    const el = wrapperRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width;
-    const y = (e.clientY - rect.top) / rect.height;
-    const tiltX = (y - 0.5) * 20;
-    const tiltY = (0.5 - x) * 20;
-    if (frameRef.current) cancelAnimationFrame(frameRef.current);
-    frameRef.current = requestAnimationFrame(() => {
-      setTilt({ x: tiltX, y: tiltY });
-      setGlare({ x: x * 100, y: y * 100 });
-    });
-  }, []);
-
-  const handleMouseLeave = useCallback(() => {
-    setIsHovered(false);
-    if (frameRef.current) cancelAnimationFrame(frameRef.current);
-    frameRef.current = requestAnimationFrame(() => {
-      setTilt({ x: 0, y: 0 });
-      setGlare({ x: 50, y: 50 });
-    });
-  }, []);
-
-  const transform = `perspective(600px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`;
-
+  const size = "clamp(110px, 13vw, 170px)";
   return (
     <div className="pfp-container">
-      <div
-        ref={wrapperRef}
-        className="pfp-wrapper"
-        style={{ transform }}
-        onMouseMove={handleMouseMove}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={handleMouseLeave}
-      >
-        <img src="/images/pfp-default.jpg" alt="HoutarouDes" className="pfp-img pfp-default" />
-        <img src="/images/pfp-hover.jpg" alt="HoutarouDes" className="pfp-img pfp-hover" />
-        <div
-          className="pfp-glare"
-          style={{
-            opacity: isHovered ? 1 : 0,
-            "--glare-x": `${glare.x}%`,
-            "--glare-y": `${glare.y}%`,
-          }}
-        />
-        {/* Decorative ring */}
-        <div className="pfp-ring" />
-      </div>
+      <PixelTransition
+        firstContent={
+          <img
+            src="/images/pfp-default.jpg"
+            alt="HoutarouDes"
+            style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%" }}
+          />
+        }
+        secondContent={
+          <img
+            src="/images/pfp-hover.jpg"
+            alt="HoutarouDes"
+            style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%" }}
+          />
+        }
+        gridSize={12}
+        pixelColor="var(--accent)"
+        animationStepDuration={0.4}
+        once={false}
+        aspectRatio="100%"
+        className="pfp-pixel-transition"
+        style={{ width: size, height: size, borderRadius: "50%" }}
+      />
     </div>
   );
 }
 
-/* ===== Components ===== */
 function ScrollToTop() {
   const [visible, setVisible] = useState(false);
   useEffect(() => {
@@ -197,9 +148,7 @@ function ScrollToTop() {
       whileHover={{ color: "var(--accent)", borderColor: "var(--accent)" }}
       aria-label="Scroll to top"
     >
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <line x1="12" y1="19" x2="12" y2="5" /><polyline points="5 12 12 5 19 12" />
-      </svg>
+      <ArrowUp size={16} weight="Outline" />
     </motion.button>
   );
 }
@@ -254,7 +203,7 @@ export default function PortfolioV2() {
               title={darkMode ? "Light Mode" : "Dark Mode"}
               aria-label="Toggle theme"
             >
-              {darkMode ? <IconSun /> : <IconMoon />}
+              {darkMode ? <Sun size={18} weight="Outline" /> : <Moon size={18} weight="Outline" />}
             </button>
           </div>
         </div>
@@ -270,7 +219,7 @@ export default function PortfolioV2() {
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           >
             <div className="hero-layout">
-              {/* Profile Picture with 3D tilt + crossfade */}
+              {/* Profile Picture with PixelTransition grid effect */}
               <ProfilePicture />
 
               {/* Hero text */}
@@ -286,10 +235,10 @@ export default function PortfolioV2() {
                 </h2>
                 <div className="hero-actions">
                   <a href="#projects" className="btn btn-primary">
-                    <IconExternal s={15} /> View Projects
+                    <Link size={15} weight="Outline" color="white" /> View Projects
                   </a>
                   <a href="#contact" className="btn btn-ghost">
-                    <IconMail s={15} /> Get in Touch
+                    <Envelope size={15} weight="Outline" /> Get in Touch
                   </a>
                   <a href="https://github.com/houtaroudes" target="_blank" rel="noopener" className="btn btn-ghost">
                     <IconGithub s={15} /> GitHub
@@ -372,7 +321,7 @@ export default function PortfolioV2() {
               <div className="hero-actions" style={{ justifyContent: "center" }}>
                 {project.demo && (
                   <a href={project.demo} target="_blank" rel="noopener" className="btn btn-primary">
-                    <IconExternal s={15} /> Live Demo
+                    <Link size={15} weight="Outline" color="white" /> Live Demo
                   </a>
                 )}
                 <a href={project.code} target="_blank" rel="noopener" className="btn btn-ghost">
@@ -404,7 +353,7 @@ export default function PortfolioV2() {
               <div className="card-actions">
                 {project.demo && (
                   <a href={project.demo} target="_blank" rel="noopener" className="card-link">
-                    <IconExternal s={13} /> Live Demo
+                    <Link size={13} weight="Outline" /> Live Demo
                   </a>
                 )}
                 <a href={project.code} target="_blank" rel="noopener" className="card-link">
@@ -452,7 +401,7 @@ export default function PortfolioV2() {
                 <input type="hidden" name="_subject" value="New portfolio message!" />
                 <input type="text" name="_gotcha" style={{ display: "none" }} />
                 <button type="submit" className="btn btn-primary" style={{ justifyContent: "center" }}>
-                  <IconMail s={15} /> Send Message
+                  <Envelope size={15} weight="Outline" color="white" /> Send Message
                 </button>
               </>
             ) : (
@@ -469,7 +418,7 @@ export default function PortfolioV2() {
           </form>
           <div className="contact-info">
             <span>Or reach me directly:</span>
-            <a href="mailto:houtaroudes@gmail.com"><IconMail s={13} /> houtaroudes@gmail.com</a>
+            <a href="mailto:houtaroudes@gmail.com"><Envelope size={13} weight="Outline" /> houtaroudes@gmail.com</a>
           </div>
         </div>
       </section>
