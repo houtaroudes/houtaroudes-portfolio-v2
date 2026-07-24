@@ -202,7 +202,7 @@ export default function PortfolioV2() {
                 </a>
               ))}
             </div>
-            <a href="https://houtaroudes-portfolio.vercel.app" className="version-btn" target="_blank" rel="noopener">
+            <a href="https://houtaroudes-game-portfolio.vercel.app" className="version-btn" target="_blank" rel="noopener">
               Pixel Portfolio
             </a>
             <button
