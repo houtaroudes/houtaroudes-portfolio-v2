@@ -1,0 +1,449 @@
+import { useEffect, useState, useRef } from "react";
+import { motion } from "framer-motion";
+
+/* ===== Icons as inline SVGs ===== */
+const IconGithub = ({ s = 18 }) => (
+  <svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M9 19c-4 1.2-4-2.1-5.5-2.5M17 22v-3.2c0-.9-.3-1.5-.6-1.8 2.1-.2 4.3-1 4.3-4.7 0-1-.4-1.9-1-2.6.1-.3.4-1.3-.1-2.7 0 0-.9-.3-2.9 1a10 10 0 00-5.4 0c-2-1.3-2.9-1-2.9-1-.5 1.4-.2 2.4-.1 2.7-.6.7-1 1.6-1 2.6 0 3.7 2.2 4.5 4.3 4.7-.3.3-.5.7-.6 1.4V22" />
+  </svg>
+);
+const IconMail = ({ s = 18 }) => (
+  <svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="3" y="5" width="18" height="14" rx="2" /><path d="M3.5 6.5L12 13l8.5-6.5" />
+  </svg>
+);
+const IconExternal = ({ s = 14 }) => (
+  <svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6" /><polyline points="15 3 21 3 21 9" /><line x1="10" y1="14" x2="21" y2="3" />
+  </svg>
+);
+const IconArrowUp = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="12" y1="19" x2="12" y2="5" /><polyline points="5 12 12 5 19 12" />
+  </svg>
+);
+
+/* ===== Data ===== */
+const projects = [
+  { id: 1, title: "Motion Website", desc: "A front-end inspiration hub for exploring layout and animation ideas.", tags: ["HTML", "CSS", "JS"], demo: "https://motion-website-des.vercel.app", code: "https://github.com/houtaroudes/motion-website", type: "Full Stack", year: "2025" },
+  { id: 2, title: "PixelPodWeb", desc: "A photobooth web app with PHP + MySQL backend — built solo as a school project.", tags: ["PHP", "MySQL", "CSS", "JS"], demo: "https://pixelpodweb.vercel.app", code: "https://github.com/houtaroudes/PixelPodWeb", type: "Full Stack", year: "2025" },
+  { id: 3, title: "Houtarou Cafe", desc: "A concept cafe site with minimalist design — ordering flow and reservation system.", tags: ["HTML", "CSS", "JS"], code: "https://github.com/houtaroudes/houtarou-cafe", type: "Frontend", year: "2026" },
+  { id: 4, title: "Learning WebDev Hub", desc: "My gamified learning hub with 26+ exercises, live previews, and code challenges!", tags: ["React", "Vite", "HTML", "CSS"], demo: "https://random-learning-webdev-site.vercel.app", code: "https://github.com/houtaroudes/random-learning-webdev-site", type: "Full Stack", year: "2026", featured: true },
+];
+
+const skills = [
+  { name: "HTML5", color: "#e34f26" }, { name: "CSS3", color: "#1572b6" },
+  { name: "JavaScript", color: "#f7df1e" }, { name: "React", color: "#61dafb" },
+  { name: "PHP", color: "#777bb3" }, { name: "MySQL", color: "#4479a1" },
+  { name: "Git", color: "#f05032" }, { name: "Vite", color: "#a29bfe" },
+];
+
+/* ===== Hooks ===== */
+function useScrollReveal() {
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) entry.target.classList.add("visible");
+        });
+      },
+      { threshold: 0.1, rootMargin: "0px 0px -50px 0px" }
+    );
+    document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+}
+
+function useActiveSection(ids) {
+  const [active, setActive] = useState(ids[0] || "");
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) { setActive(entry.target.id); break; }
+        }
+      },
+      { rootMargin: "-40% 0px -55% 0px", threshold: 0 }
+    );
+    ids.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+    return () => observer.disconnect();
+  }, [ids]);
+  return active;
+}
+
+/* ===== Components ===== */
+function ScrollToTop() {
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const handler = () => setVisible(window.scrollY > 400);
+    window.addEventListener("scroll", handler, { passive: true });
+    return () => window.removeEventListener("scroll", handler);
+  }, []);
+  return (
+    <motion.button
+      className="btn" style={{
+        position: "fixed", bottom: "24px", right: "24px", zIndex: 50,
+        width: "44px", height: "44px", borderRadius: "50%", padding: 0,
+        display: "flex", alignItems: "center", justifyContent: "center",
+        background: "var(--bg-card)", border: "1px solid var(--border)",
+        color: "var(--text-secondary)", cursor: "pointer",
+        boxShadow: "var(--shadow-md)",
+      }}
+      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      animate={{ scale: visible ? 1 : 0, opacity: visible ? 1 : 0 }}
+      transition={{ duration: 0.3, ease: "backOut" }}
+      whileHover={{ color: "var(--accent)", borderColor: "var(--accent)" }}
+    >
+      <IconArrowUp />
+    </motion.button>
+  );
+}
+
+function useCountUp(target, duration = 1500) {
+  const [count, setCount] = useState(0);
+  const ref = useRef(null);
+  const started = useRef(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !started.current) {
+          started.current = true;
+          let startTime;
+          const animate = (time) => {
+            if (!startTime) startTime = time;
+            const elapsed = time - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            setCount(Math.floor(eased * target));
+            if (progress < 1) requestAnimationFrame(animate);
+          };
+          requestAnimationFrame(animate);
+          observer.unobserve(el);
+        }
+      },
+      { threshold: 0.3 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [target, duration]);
+
+  return { count, ref };
+}
+
+/* ===== Main Portfolio ===== */
+export default function PortfolioV2() {
+  const [scrolled, setScrolled] = useState(false);
+  const [formSent, setFormSent] = useState(false);
+  const activeSection = useActiveSection(["hero", "skills", "projects", "contact"]);
+  useScrollReveal();
+
+  useEffect(() => {
+    const handler = () => setScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", handler, { passive: true });
+    return () => window.removeEventListener("scroll", handler);
+  }, []);
+
+  const { count: projectCount, ref: projectRef } = useCountUp(4);
+  const { count: skillCount, ref: skillRef } = useCountUp(8);
+
+  return (
+    <>
+      {/* Navigation */}
+      <nav className={scrolled ? "scrolled" : ""}>
+        <div className="nav-inner">
+          <a href="#" className="logo">
+            <span>Houtarou</span>
+            <span className="logo-accent">Des</span>
+          </a>
+          <div className="nav-links">
+            {["skills", "projects", "contact"].map((id) => (
+              <a
+                key={id}
+                href={`#${id}`}
+                className={activeSection === id ? "active" : ""}
+              >
+                {id.charAt(0).toUpperCase() + id.slice(1)}
+              </a>
+            ))}
+          </div>
+        </div>
+      </nav>
+
+      {/* Hero */}
+      <section className="hero" id="hero">
+        <div className="hero-gradient" />
+        <div className="hero-content">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <div className="hero-tag">
+              <span>✦</span> Full-Stack Developer
+            </div>
+            <h1>
+              Hi, I'm <span className="gradient-text">HoutarouDes</span>
+              <br />
+              Building pixel-perfect
+              <br />
+              web experiences
+            </h1>
+            <p>
+              A college student with a passion for coding — turning ideas into
+              interactive realities, one commit at a time. Based in the
+              Philippines, specializing in full-stack web development.
+            </p>
+            <div className="hero-actions">
+              <a href="#projects" className="btn btn-primary">
+                <IconExternal s={16} /> View Projects
+              </a>
+              <a href="#contact" className="btn btn-ghost">
+                <IconMail s={16} /> Get in Touch
+              </a>
+              <a
+                href="https://github.com/houtaroudes"
+                target="_blank"
+                rel="noopener"
+                className="btn btn-ghost"
+              >
+                <IconGithub s={16} /> GitHub
+              </a>
+            </div>
+
+            {/* Stats */}
+            <div style={{ display: "flex", gap: "32px", marginTop: "48px" }}>
+              <div>
+                <div style={{ fontSize: "1.75rem", fontWeight: "700", color: "var(--accent)" }}>
+                  <span ref={projectRef}>{projectCount}</span>+
+                </div>
+                <div style={{ fontSize: "0.8rem", color: "var(--text-tertiary)" }}>Projects</div>
+              </div>
+              <div>
+                <div style={{ fontSize: "1.75rem", fontWeight: "700", color: "var(--accent)" }}>
+                  <span ref={skillRef}>{skillCount}</span>
+                </div>
+                <div style={{ fontSize: "0.8rem", color: "var(--text-tertiary)" }}>Technologies</div>
+              </div>
+              <div>
+                <div style={{ fontSize: "1.75rem", fontWeight: "700", color: "var(--accent)" }}>
+                  2025
+                </div>
+                <div style={{ fontSize: "0.8rem", color: "var(--text-tertiary)" }}>Started Coding</div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Divider */}
+      <div className="divider" style={{ width: "60%" }} />
+
+      {/* Skills */}
+      <section className="section" id="skills">
+        <div className="section-header reveal">
+          <div className="section-eyebrow">⚡ Technologies</div>
+          <h2 className="section-title">Skills & Tools</h2>
+          <p className="section-desc">
+            Technologies I've been working with to build modern web applications.
+          </p>
+        </div>
+        <div className="skills-grid reveal reveal-delay-1">
+          {skills.map((skill, i) => (
+            <motion.div
+              key={skill.name}
+              className="skill-badge"
+              whileHover={{ y: -4, scale: 1.02 }}
+              transition={{ type: "spring", stiffness: 300, damping: 15 }}
+            >
+              <span className="skill-dot" style={{ background: skill.color }} />
+              {skill.name}
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      {/* Divider */}
+      <div className="divider" style={{ width: "60%" }} />
+
+      {/* Projects */}
+      <section className="section" id="projects">
+        <div className="section-header reveal">
+          <div className="section-eyebrow">📁 Work</div>
+          <h2 className="section-title">Featured Projects</h2>
+          <p className="section-desc">
+            A collection of projects I've built — from full-stack apps to
+            front-end experiments.
+          </p>
+        </div>
+
+        {/* Featured Project */}
+        {projects
+          .filter((p) => p.featured)
+          .map((project) => (
+            <motion.div
+              key={project.id}
+              className="featured-section reveal reveal-delay-1"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <div className="featured-card">
+                <div className="featured-badge-small">★ Featured Project</div>
+                <h3>{project.title}</h3>
+                <p>{project.desc}</p>
+                <div className="card-tags" style={{ justifyContent: "center" }}>
+                  {project.tags.map((t) => (
+                    <span className="tag" key={t}>{t}</span>
+                  ))}
+                </div>
+                <div className="hero-actions" style={{ justifyContent: "center" }}>
+                  {project.demo && (
+                    <a href={project.demo} target="_blank" rel="noopener" className="btn btn-primary">
+                      <IconExternal s={16} /> Live Demo
+                    </a>
+                  )}
+                  <a href={project.code} target="_blank" rel="noopener" className="btn btn-ghost">
+                    <IconGithub s={16} /> View Code
+                  </a>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+
+        {/* All Projects */}
+        <div className="project-grid">
+          {projects
+            .filter((p) => !p.featured)
+            .map((project, i) => (
+              <motion.div
+                key={project.id}
+                className="project-card reveal"
+                style={{ transitionDelay: `${0.1 + i * 0.1}s` }}
+                whileHover={{ y: -6 }}
+                transition={{ type: "spring", stiffness: 200, damping: 15 }}
+              >
+                <div className="card-top">
+                  <span className="card-year">{project.year}</span>
+                  <span className={`card-badge ${project.featured ? "featured-badge" : ""}`}>
+                    {project.type}
+                  </span>
+                </div>
+                <h3 className="card-title">{project.title}</h3>
+                <p className="card-desc">{project.desc}</p>
+                <div className="card-tags">
+                  {project.tags.map((t) => (
+                    <span className="tag" key={t}>{t}</span>
+                  ))}
+                </div>
+                <div className="card-actions">
+                  {project.demo && (
+                    <a href={project.demo} target="_blank" rel="noopener" className="card-link">
+                      <IconExternal s={14} /> Live Demo
+                    </a>
+                  )}
+                  <a href={project.code} target="_blank" rel="noopener" className="card-link">
+                    <IconGithub s={14} /> Source
+                  </a>
+                </div>
+              </motion.div>
+            ))}
+        </div>
+      </section>
+
+      {/* Divider */}
+      <div className="divider" style={{ width: "60%" }} />
+
+      {/* Contact */}
+      <section className="section" id="contact">
+        <div className="section-header reveal">
+          <div className="section-eyebrow">📬 Contact</div>
+          <h2 className="section-title">Let's Build Together</h2>
+          <p className="section-desc">
+            Open for freelance gigs, school projects, or just talking shop about
+            web dev and design.
+          </p>
+        </div>
+
+        <div className="contact-card reveal reveal-delay-1">
+          <h3>Get In Touch</h3>
+          <p>Have a project in mind? Send me a message and I'll get back to you.</p>
+
+          <form
+            className="contact-form"
+            onSubmit={async (e) => {
+              e.preventDefault();
+              const data = new FormData(e.target);
+              try {
+                await fetch("https://formspree.io/f/xzdnjdbd", {
+                  method: "POST",
+                  body: data,
+                  headers: { Accept: "application/json" },
+                });
+                setFormSent(true);
+              } catch {
+                e.target.submit();
+              }
+            }}
+          >
+            {!formSent ? (
+              <>
+                <input type="text" name="name" placeholder="Your name" required />
+                <input type="email" name="email" placeholder="Your email" required />
+                <textarea name="message" placeholder="Your message..." required rows={4} />
+                <input type="hidden" name="_subject" value="New portfolio message!" />
+                <input type="text" name="_gotcha" style={{ display: "none" }} />
+                <button type="submit" className="btn btn-primary" style={{ justifyContent: "center" }}>
+                  <IconMail s={16} /> Send Message
+                </button>
+              </>
+            ) : (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                style={{
+                  textAlign: "center", padding: "24px",
+                  background: "rgba(99,102,241,0.06)", borderRadius: "var(--radius-md)",
+                  border: "1px solid rgba(99,102,241,0.15)",
+                }}
+              >
+                <div style={{ fontSize: "2rem", marginBottom: "8px" }}>✓</div>
+                <h4 style={{ fontWeight: "600", marginBottom: "4px" }}>Message Sent!</h4>
+                <p style={{ fontSize: "0.85rem", color: "var(--text-secondary)" }}>
+                  Thanks for reaching out. I'll reply as soon as possible.
+                </p>
+              </motion.div>
+            )}
+          </form>
+
+          <div className="contact-info">
+            <span>Or reach me directly:</span>
+            <a href="mailto:houtaroudes@gmail.com">
+              <IconMail s={14} /> houtaroudes@gmail.com
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer>
+        <div className="footer-inner">
+          <p>
+            Built with <span className="footer-heart">♥</span> by HoutarouDes
+          </p>
+          <p style={{ marginTop: "4px", fontSize: "0.8rem" }}>
+            © {new Date().getFullYear()} HoutarouDes. All rights reserved.
+          </p>
+        </div>
+      </footer>
+
+      <ScrollToTop />
+    </>
+  );
+}
