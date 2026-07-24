@@ -116,13 +116,13 @@ nav.scrolled{
 .version-btn{
   display:inline-flex;align-items:center;gap:4px;
   padding:6px 12px;border-radius:6px;margin-right:8px;
-  font-size:0.75rem;font-weight:600;letter-spacing:0.5px;
-  background:var(--tag-bg);color:var(--accent);border:1px solid var(--tag-border);
+  font-size:0.8rem;font-weight:500;letter-spacing:0;
+  background:transparent;color:var(--text-secondary);border:1px solid var(--border);
   text-decoration:none;transition:all 0.3s var(--ease);cursor:pointer;
 }
 .version-btn:hover{
-  background:var(--accent);color:#fff;transform:translateY(-2px);
-  box-shadow:0 0 20px var(--accent-glow);
+  color:var(--accent);border-color:var(--accent);
+  background:var(--tag-bg);
 }
 
 /* ===== Hero ===== */
