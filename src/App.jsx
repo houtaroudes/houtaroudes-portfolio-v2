@@ -198,7 +198,7 @@ export default function PortfolioV2() {
               ))}
             </div>
             <a href="https://houtaroudes-portfolio.vercel.app" className="version-btn" target="_blank" rel="noopener">
-              <span className="version-btn-text">🎮 Classic</span>
+              Pixel Portfolio
             </a>
             <button
               className="theme-toggle"
