@@ -435,7 +435,7 @@ export default function PortfolioV2() {
       <footer>
         <div className="footer-inner">
           <p>Designed & built by HoutarouDes</p>
-          <p style={{ marginTop: "4px", fontSize: "0.75rem" }}>© {new Date().getFullYear()} HoutarouDes. All rights reserved.</p>
+          <p style={{ marginTop: "4px", fontSize: "0.75rem" }}>Built with passion, powered by curiosity — no templates, just code.</p>
         </div>
       </footer>
 
