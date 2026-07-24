@@ -40,27 +40,27 @@ button{cursor:pointer;font-family:inherit}
 }
 
 [data-theme="dark"]{
-  --accent:#818cf8;
-  --accent-light:#a5b4fc;
-  --accent-dark:#6366f1;
-  --accent-glow:rgba(129,140,248,0.15);
-  --bg:#0f172a;
-  --bg-card:#1e293b;
-  --bg-card-hover:#334155;
-  --text:#f1f5f9;
-  --text-secondary:#94a3b8;
-  --text-tertiary:#64748b;
-  --border:rgba(255,255,255,0.08);
-  --border-hover:rgba(129,140,248,0.25);
-  --shadow-sm:0 1px 2px rgba(0,0,0,0.2);
-  --shadow-md:0 4px 12px rgba(0,0,0,0.3);
-  --shadow-lg:0 12px 40px rgba(0,0,0,0.4);
-  --nav-bg:rgba(15,23,42,0.92);
-  --hero-gradient:radial-gradient(800px circle at 50% 40%,rgba(129,140,248,0.08),transparent 70%);
-  --tag-bg:rgba(129,140,248,0.1);
-  --tag-border:rgba(129,140,248,0.2);
-  --success-bg:rgba(129,140,248,0.08);
-  --success-border:rgba(129,140,248,0.2);
+  --accent:#a78bfa;
+  --accent-light:#c4b5fd;
+  --accent-dark:#8b5cf6;
+  --accent-glow:rgba(167,139,250,0.12);
+  --bg:#0a0a0a;
+  --bg-card:#141414;
+  --bg-card-hover:#1f1f1f;
+  --text:#e5e5e5;
+  --text-secondary:#a3a3a3;
+  --text-tertiary:#737373;
+  --border:rgba(255,255,255,0.06);
+  --border-hover:rgba(167,139,250,0.2);
+  --shadow-sm:0 1px 2px rgba(0,0,0,0.3);
+  --shadow-md:0 4px 12px rgba(0,0,0,0.4);
+  --shadow-lg:0 12px 40px rgba(0,0,0,0.5);
+  --nav-bg:rgba(10,10,10,0.92);
+  --hero-gradient:radial-gradient(800px circle at 50% 40%,rgba(167,139,250,0.06),transparent 70%);
+  --tag-bg:rgba(167,139,250,0.08);
+  --tag-border:rgba(167,139,250,0.15);
+  --success-bg:rgba(167,139,250,0.06);
+  --success-border:rgba(167,139,250,0.12);
 }
 
 /* ===== Theme Transition ===== */
@@ -308,8 +308,7 @@ footer{
 }
 .footer-inner{max-width:var(--max-w);margin:0 auto}
 footer p{font-size:0.8rem;color:var(--text-tertiary)}
-footer .footer-heart{color:#ef4444;display:inline-block;animation:heartBeat 1.5s ease infinite}
-@keyframes heartBeat{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
+
 
 /* ===== Shared ===== */
 .divider{height:1px;background:var(--border);margin:0 auto;max-width:60%}

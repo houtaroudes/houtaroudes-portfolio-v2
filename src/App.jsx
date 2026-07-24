@@ -114,7 +114,7 @@ function ProfilePicture() {
           />
         }
         gridSize={12}
-        pixelColor="var(--accent)"
+        pixelColor="#ffffff"
         animationStepDuration={0.4}
         once={false}
         aspectRatio="100%"
@@ -161,7 +161,7 @@ export default function PortfolioV2() {
     if (typeof window === "undefined") return false;
     const saved = localStorage.getItem("theme-v2");
     if (saved) return saved === "dark";
-    return window.matchMedia("(prefers-color-scheme: dark)").matches;
+    return false;
   });
   const activeSection = useActiveSection(["hero", "skills", "projects", "contact"]);
   useScrollReveal();
@@ -426,7 +426,7 @@ export default function PortfolioV2() {
       {/* Footer */}
       <footer>
         <div className="footer-inner">
-          <p>Built with <span className="footer-heart">♥</span> by HoutarouDes</p>
+          <p>Designed & built by HoutarouDes</p>
           <p style={{ marginTop: "4px", fontSize: "0.75rem" }}>© {new Date().getFullYear()} HoutarouDes. All rights reserved.</p>
         </div>
       </footer>
