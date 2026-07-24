@@ -197,6 +197,9 @@ export default function PortfolioV2() {
                 </a>
               ))}
             </div>
+            <a href="https://houtaroudes-portfolio.vercel.app" className="version-btn" target="_blank" rel="noopener">
+              <span className="version-btn-text">🎮 Classic</span>
+            </a>
             <button
               className="theme-toggle"
               onClick={() => setDarkMode(!darkMode)}
