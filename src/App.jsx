@@ -184,57 +184,78 @@ export default function PortfolioV2() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="hero-tag">
-              <span>✦</span> Full-Stack Developer
-            </div>
-            <h1>
-              Hi, I'm <span className="gradient-text">HoutarouDes</span>
-              <br />
-              Building pixel-perfect
-              <br />
-              web experiences
-            </h1>
-            <p>
-              A college student with a passion for coding — turning ideas into
-              interactive realities, one commit at a time. Based in the
-              Philippines, specializing in full-stack web development.
-            </p>
-            <div className="hero-actions">
-              <a href="#projects" className="btn btn-primary">
-                <IconExternal s={16} /> View Projects
-              </a>
-              <a href="#contact" className="btn btn-ghost">
-                <IconMail s={16} /> Get in Touch
-              </a>
-              <a
-                href="https://github.com/houtaroudes"
-                target="_blank"
-                rel="noopener"
-                className="btn btn-ghost"
-              >
-                <IconGithub s={16} /> GitHub
-              </a>
-            </div>
+            <div className="hero-layout">
+              {/* Profile Picture with hover effect */}
+              <div className="pfp-container">
+                <div className="pfp-wrapper">
+                  <img
+                    src="/images/pfp-default.jpg"
+                    alt="HoutarouDes"
+                    className="pfp-img pfp-default"
+                  />
+                  <img
+                    src="/images/pfp-hover.jpg"
+                    alt="HoutarouDes hover"
+                    className="pfp-img pfp-hover"
+                  />
+                </div>
+              </div>
 
-            {/* Stats */}
-            <div style={{ display: "flex", gap: "32px", marginTop: "48px" }}>
-              <div>
-                <div style={{ fontSize: "1.75rem", fontWeight: "700", color: "var(--accent)" }}>
-                  <span ref={projectRef}>{projectCount}</span>+
+              {/* Hero text */}
+              <div className="hero-text-col">
+                <div className="hero-tag">
+                  <span>✦</span> Full-Stack Developer
                 </div>
-                <div style={{ fontSize: "0.8rem", color: "var(--text-tertiary)" }}>Projects</div>
-              </div>
-              <div>
-                <div style={{ fontSize: "1.75rem", fontWeight: "700", color: "var(--accent)" }}>
-                  <span ref={skillRef}>{skillCount}</span>
+                <h1>
+                  Hi, I'm <span className="gradient-text">HoutarouDes</span>
+                  <br />
+                  Building pixel-perfect
+                  <br />
+                  web experiences
+                </h1>
+                <p>
+                  A college student with a passion for coding — turning ideas into
+                  interactive realities, one commit at a time. Based in the
+                  Philippines, specializing in full-stack web development.
+                </p>
+                <div className="hero-actions">
+                  <a href="#projects" className="btn btn-primary">
+                    <IconExternal s={16} /> View Projects
+                  </a>
+                  <a href="#contact" className="btn btn-ghost">
+                    <IconMail s={16} /> Get in Touch
+                  </a>
+                  <a
+                    href="https://github.com/houtaroudes"
+                    target="_blank"
+                    rel="noopener"
+                    className="btn btn-ghost"
+                  >
+                    <IconGithub s={16} /> GitHub
+                  </a>
                 </div>
-                <div style={{ fontSize: "0.8rem", color: "var(--text-tertiary)" }}>Technologies</div>
-              </div>
-              <div>
-                <div style={{ fontSize: "1.75rem", fontWeight: "700", color: "var(--accent)" }}>
-                  2025
+
+                {/* Stats */}
+                <div style={{ display: "flex", gap: "32px", marginTop: "48px" }}>
+                  <div>
+                    <div style={{ fontSize: "1.75rem", fontWeight: "700", color: "var(--accent)" }}>
+                      <span ref={projectRef}>{projectCount}</span>+
+                    </div>
+                    <div style={{ fontSize: "0.8rem", color: "var(--text-tertiary)" }}>Projects</div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: "1.75rem", fontWeight: "700", color: "var(--accent)" }}>
+                      <span ref={skillRef}>{skillCount}</span>
+                    </div>
+                    <div style={{ fontSize: "0.8rem", color: "var(--text-tertiary)" }}>Technologies</div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: "1.75rem", fontWeight: "700", color: "var(--accent)" }}>
+                      2025
+                    </div>
+                    <div style={{ fontSize: "0.8rem", color: "var(--text-tertiary)" }}>Started Coding</div>
+                  </div>
                 </div>
-                <div style={{ fontSize: "0.8rem", color: "var(--text-tertiary)" }}>Started Coding</div>
               </div>
             </div>
           </motion.div>

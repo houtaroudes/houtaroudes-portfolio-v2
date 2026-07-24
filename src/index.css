@@ -116,6 +116,50 @@ nav.scrolled{
 .btn-ghost{background:transparent;border-color:var(--border);color:var(--text-secondary)}
 .btn-ghost:hover{border-color:var(--accent);color:var(--accent);background:rgba(99,102,241,0.04)}
 
+/* ===== Hero Layout (with profile pic) ===== */
+.hero-layout{
+  display:flex;align-items:center;gap:60px;
+}
+.hero-text-col{flex:1;min-width:0}
+
+/* Profile Picture */
+.pfp-container{
+  flex-shrink:0;
+  position:relative;
+}
+.pfp-wrapper{
+  width:clamp(140px, 16vw, 220px);
+  height:clamp(140px, 16vw, 220px);
+  border-radius:50%;
+  overflow:hidden;
+  position:relative;
+  border:3px solid var(--border);
+  box-shadow:var(--shadow-lg);
+  transition:all 0.5s var(--ease);
+  cursor:pointer;
+}
+.pfp-wrapper:hover{
+  border-color:var(--accent-light);
+  box-shadow:0 0 0 4px rgba(99,102,241,0.15), var(--shadow-lg);
+  transform:scale(1.02);
+}
+.pfp-img{
+  width:100%;height:100%;object-fit:cover;
+  display:block;
+  transition:opacity 0.5s var(--ease), transform 0.6s var(--ease);
+}
+.pfp-default{opacity:1;position:relative;z-index:1}
+.pfp-hover{
+  position:absolute;inset:0;z-index:2;
+  opacity:0;
+  transform:scale(1.1);
+}
+.pfp-wrapper:hover .pfp-default{opacity:0;transform:scale(0.95)}
+.pfp-wrapper:hover .pfp-hover{
+  opacity:1;
+  transform:scale(1);
+}
+
 /* ===== Sections ===== */
 .section{padding:100px 24px;max-width:var(--max-w);margin:0 auto;position:relative}
 .section-header{text-align:center;margin-bottom:56px}
@@ -267,4 +311,7 @@ footer .footer-heart{color:#ef4444;display:inline-block;animation:heartBeat 1.5s
   .project-grid{grid-template-columns:1fr}
   .hero-actions{flex-direction:column}
   .hero-actions .btn{width:100%;justify-content:center}
+  .hero-layout{flex-direction:column;align-items:center;text-align:center;gap:32px}
+  .hero-layout .hero-actions{justify-content:center}
+  .hero-layout .hero-tag{justify-content:center}
 }
