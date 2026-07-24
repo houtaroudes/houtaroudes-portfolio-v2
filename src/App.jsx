@@ -7,6 +7,11 @@ const IconGithub = ({ s = 16 }) => (
     <path d="M9 19c-4 1.2-4-2.1-5.5-2.5M17 22v-3.2c0-.9-.3-1.5-.6-1.8 2.1-.2 4.3-1 4.3-4.7 0-1-.4-1.9-1-2.6.1-.3.4-1.3-.1-2.7 0 0-.9-.3-2.9 1a10 10 0 00-5.4 0c-2-1.3-2.9-1-2.9-1-.5 1.4-.2 2.4-.1 2.7-.6.7-1 1.6-1 2.6 0 3.7 2.2 4.5 4.3 4.7-.3.3-.5.7-.6 1.4V22" />
   </svg>
 );
+const EyebrowIcon = () => (
+  <svg width="8" height="8" viewBox="0 0 8 8" fill="currentColor" style={{marginRight:6}}>
+    <path d="M4 0L8 4L4 8L0 4Z"/>
+  </svg>
+);
 import PixelTransition from "./components/PixelTransition";
 import "./components/PixelTransition.css";
 
@@ -275,7 +280,7 @@ export default function PortfolioV2() {
       {/* Skills */}
       <section className="section" id="skills">
         <div className="section-header reveal">
-          <div className="section-eyebrow">⚡ Technologies</div>
+          <div className="section-eyebrow"><EyebrowIcon /> Technologies</div>
           <h2 className="section-title">Skills & Tools</h2>
           <p className="section-desc">Technologies I've been working with to build modern web applications.</p>
         </div>
@@ -300,7 +305,7 @@ export default function PortfolioV2() {
       {/* Projects */}
       <section className="section" id="projects">
         <div className="section-header reveal">
-          <div className="section-eyebrow">📁 Work</div>
+          <div className="section-eyebrow"><EyebrowIcon /> Work</div>
           <h2 className="section-title">Featured Projects</h2>
           <p className="section-desc">A collection of projects I've built — from full-stack apps to front-end experiments.</p>
         </div>
@@ -374,7 +379,7 @@ export default function PortfolioV2() {
       {/* Contact */}
       <section className="section" id="contact">
         <div className="section-header reveal">
-          <div className="section-eyebrow">📬 Contact</div>
+          <div className="section-eyebrow"><EyebrowIcon /> Contact</div>
           <h2 className="section-title">Let's Build Together</h2>
           <p className="section-desc">Open for freelance gigs, school projects, or just talking shop about web dev.</p>
         </div>
