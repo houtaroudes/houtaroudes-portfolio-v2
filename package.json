@@ -11,8 +11,11 @@
   },
   "dependencies": {
     "framer-motion": "^12.42.2",
+    "gsap": "^3.15.0",
     "react": "^19.2.7",
-    "react-dom": "^19.2.7"
+    "react-dom": "^19.2.7",
+    "reicon": "^1.1.103",
+    "reicon-react": "^1.1.302"
   },
   "devDependencies": {
     "@types/react": "^19.2.17",
