@@ -312,6 +312,7 @@ export default function PortfolioV2() {
           <p className="section-desc">A collection of projects I've built — from full-stack apps to front-end experiments.</p>
         </div>
 
+        <div className="featured-grid">
         {projects.filter((p) => p.featured).map((project) => (
           <motion.div
             key={project.id}
@@ -341,6 +342,7 @@ export default function PortfolioV2() {
             </div>
           </motion.div>
         ))}
+        </div>
 
         <div className="project-grid">
           {projects.filter((p) => !p.featured).map((project, i) => (
