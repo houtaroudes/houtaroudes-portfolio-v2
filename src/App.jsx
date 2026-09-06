@@ -29,7 +29,7 @@ const skills = [
   { name: "HTML5", color: "#e34f26" }, { name: "CSS3", color: "#1572b6" },
   { name: "JavaScript", color: "#f7df1e" }, { name: "React", color: "#61dafb" },
   { name: "PHP", color: "#777bb3" }, { name: "MySQL", color: "#4479a1" },
-  { name: "Git", color: "#f05032" }, { name: "Vite", color: "#a29bfe" },
+  { name: "Git", color: "#f05032" }, { name: "Vite", color: "#a29bfe" }, { name: "C#", color: "#68217a" }, { name: "C++", color: "#00599c" },
 ];
 
 /* ===== Hooks ===== */
@@ -185,7 +185,7 @@ export default function PortfolioV2() {
   }, []);
 
   const { count: projectCount, ref: projectRef } = useCountUp(4);
-  const { count: skillCount, ref: skillRef } = useCountUp(8);
+  const { count: skillCount, ref: skillRef } = useCountUp(10);
 
   return (
     <>
