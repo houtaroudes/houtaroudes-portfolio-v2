@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { motion, useScroll } from "framer-motion";
+import { motion, AnimatePresence, useScroll } from "framer-motion";
 import { Sun, Moon, ArrowUp, Envelope, Link } from "reicon-react";
 
 const IconGithub = ({ s = 16 }) => (
@@ -21,10 +21,22 @@ const projects = [
   { id: 1, title: "Motion Website", desc: "A front-end inspiration hub for exploring layout and animation ideas.", tags: ["HTML", "CSS", "JS"], demo: "https://motion-website-des.vercel.app", code: "https://github.com/houtaroudes/motion-website", type: "Full Stack", year: "2025" },
   { id: 2, title: "PixelPodWeb", desc: "A photobooth web app with PHP + MySQL backend — built solo as a school project.", tags: ["PHP", "MySQL", "CSS", "JS"], demo: "https://pixelpodweb.vercel.app", code: "https://github.com/houtaroudes/PixelPodWeb", type: "Full Stack", year: "2025" },
   { id: 3, title: "Houtarou Cafe", desc: "A concept cafe site with minimalist design — ordering flow and reservation system.", tags: ["HTML", "CSS", "JS"], code: "https://github.com/houtaroudes/houtarou-cafe", type: "Frontend", year: "2026" },
-  { id: 4, title: "Learning WebDev Hub", desc: "My gamified learning hub with 26+ exercises, live previews, and code challenges!", tags: ["React", "Vite", "HTML", "CSS"], demo: "https://random-learning-webdev-site.vercel.app", code: "https://github.com/houtaroudes/random-learning-webdev-site", type: "Full Stack", year: "2026", featured: true },
-  { id: 5, title: "Modern Filipino Homes", desc: "MONO-inspired architecture landing page with word-by-word scroll reveals, house carousel, and phase-built gallery — a premium Filipino housing showcase.", tags: ["React", "Vite", "Framer Motion"], demo: "https://modern-filipino-homes.vercel.app", code: "https://github.com/houtaroudes/Modern-Filipino-Homes", type: "Full Stack", year: "2026", featured: true },
-  { id: 6, title: "Modern Filipino Homes Platform", desc: "A secure proptech platform: property showcase, interactive financing calculator, climate resilience matrix, AI chat assistant, and secure lead capture — sustainable homes for the modern Filipino.", tags: ["React", "Vite", "tRPC", "MySQL", "Tailwind"], demo: "https://modern-fil-homes.vercel.app", code: "https://github.com/houtaroudes/modern-fil-homes", type: "Full Stack", year: "2026", featured: true },
+  { id: 4, title: "Learning WebDev Hub", desc: "My gamified learning hub with 26+ exercises, live previews, and code challenges!", tags: ["React", "Vite", "HTML", "CSS"], demo: "https://random-learning-webdev-site.vercel.app", code: "https://github.com/houtaroudes/random-learning-webdev-site", type: "Full Stack", year: "2026" },
+  { id: 5, title: "Modern Filipino Homes", desc: "MONO-inspired architecture landing page with word-by-word scroll reveals, house carousel, and phase-built gallery.", tags: ["React", "Vite", "Framer Motion"], demo: "https://modern-filipino-homes.vercel.app", code: "https://github.com/houtaroudes/Modern-Filipino-Homes", type: "Frontend", year: "2026" },
 ];
+
+const flagship = {
+  title: "Modern Filipino Homes Platform",
+  desc: "My most complete build — a secure proptech platform: property showcase, interactive financing calculator, climate resilience matrix, AI chat assistant, and secure lead capture.",
+  tags: ["React", "Vite", "tRPC", "MySQL", "Tailwind"],
+  demo: "https://modern-fil-homes.vercel.app",
+  code: "https://github.com/houtaroudes/modern-fil-homes",
+  points: [
+    "Live & deployed with security headers (CSP, HSTS)",
+    "Full-stack: tRPC API, MySQL database, secure lead capture",
+    "Financing calculator, AI chat assistant, property showcase",
+  ],
+};
 
 const skills = [
   { name: "HTML5", color: "#e34f26" }, { name: "CSS3", color: "#1572b6" },
@@ -33,80 +45,32 @@ const skills = [
   { name: "Git", color: "#f05032" }, { name: "Vite", color: "#a29bfe" }, { name: "C#", color: "#68217a" }, { name: "C++", color: "#00599c" },
 ];
 
-/* ===== Tools marquee (BrewedOps-style scrolling chip row) ===== */
-function ToolsMarquee() {
-  const row = [...skills, ...skills];
-  return (
-    <div className="tools-marquee" aria-hidden="true">
-      <div className="tools-track">
-        {row.map((skill, i) => (
-          <span className="tool-chip" key={`${skill.name}-${i}`}>
-            <span className="skill-dot" style={{ background: skill.color }} />
-            {skill.name}
-          </span>
-        ))}
-      </div>
-    </div>
-  );
-}
+const services = [
+  { title: "Full-Stack Web Apps", desc: "React front-ends with real backends — APIs, databases, auth. From idea to deployed product." },
+  { title: "Landing Pages", desc: "Fast, animated, pixel-perfect marketing pages that load quickly and convert visitors." },
+  { title: "School & Project Help", desc: "Clean, well-documented code for capstones and school projects — built to actually work." },
+];
 
-/* ===== Flagship case study (scroll-progress showcase) ===== */
-function Flagship() {
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-  const project = projects.find((p) => p.id === 6);
-  return (
-    <section className="section flagship-section" id="flagship" ref={ref}>
-      <div className="flagship-progress-wrap" aria-hidden="true">
-        <motion.div className="flagship-progress" style={{ scaleX: scrollYProgress }} />
-      </div>
-      <div className="section-header reveal">
-        <div className="section-eyebrow"><EyebrowIcon /> Flagship Project</div>
-        <h2 className="section-title">Modern Filipino Homes Platform</h2>
-        <p className="section-desc">My most complete build — a secure proptech platform, live in production.</p>
-      </div>
-      <div className="flagship-stage reveal reveal-delay-1">
-        <div className="flagship-window" aria-hidden="true">
-          <div className="fw-bar">
-            <span /><span /><span />
-            <em>modern-fil-homes.vercel.app</em>
-          </div>
-          <div className="fw-body">
-            <div className="fw-hero">
-              <div className="fw-hero-line" />
-              <div className="fw-hero-line short" />
-              <div className="fw-hero-cta" />
-            </div>
-            <div className="fw-cards">
-              <div className="fw-card"><i /><b /><u /></div>
-              <div className="fw-card"><i /><b /><u /></div>
-              <div className="fw-card"><i /><b /><u /></div>
-            </div>
-          </div>
-        </div>
-        <div className="flagship-info">
-          <p>{project.desc}</p>
-          <div className="card-tags">
-            {project.tags.map((t) => (<span className="tag" key={t}>{t}</span>))}
-          </div>
-          <ul className="flagship-points">
-            <li>Live & deployed with security headers (CSP, HSTS)</li>
-            <li>Full-stack: tRPC API, MySQL database, lead capture</li>
-            <li>Financing calculator, AI chat, property showcase</li>
-          </ul>
-          <div className="hero-actions">
-            <a href={project.demo} target="_blank" rel="noopener" className="btn btn-primary">
-              <Link size={15} weight="Outline" color="white" /> Live Demo
-            </a>
-            <a href={project.code} target="_blank" rel="noopener" className="btn btn-ghost">
-              <IconGithub s={15} /> View Code
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
+const method = [
+  { step: "01", title: "Discover", desc: "We talk about what you need — goals, features, timeline. No jargon, just clarity." },
+  { step: "02", title: "Build", desc: "I ship working software in small increments so you see progress every step of the way." },
+  { step: "03", title: "Launch & Support", desc: "We deploy it live, then I stick around for fixes, tweaks, and improvements." },
+];
+
+const faqs = [
+  { q: "What can you build?", a: "Full-stack web apps, landing pages, and school projects — React front-ends, PHP or Node backends, MySQL databases, all deployed live." },
+  { q: "How much does a project cost?", a: "It depends on scope. Student and school projects are budget-friendly; bigger apps are quoted after we talk about what you need." },
+  { q: "How long does it take?", a: "A landing page can take days; a full app takes weeks. I work in increments so you see real progress early." },
+  { q: "Can you maintain my existing project?", a: "Yes — fixes, new features, or deployment help on existing codebases are all fine." },
+];
+
+const NAV_ITEMS = [
+  { id: "home", label: "Home" },
+  { id: "about", label: "About" },
+  { id: "work", label: "Work" },
+  { id: "services", label: "Services" },
+  { id: "contact", label: "Contact" },
+];
 
 /* ===== Hooks ===== */
 function useScrollReveal() {
@@ -133,7 +97,7 @@ function useActiveSection(ids) {
           if (entry.isIntersecting) { setActive(entry.target.id); break; }
         }
       },
-      { rootMargin: "-40% 0px -55% 0px", threshold: 0 }
+      { rootMargin: "-35% 0px -55% 0px", threshold: 0 }
     );
     ids.forEach((id) => {
       const el = document.getElementById(id);
@@ -208,6 +172,110 @@ function ProfilePicture() {
   );
 }
 
+function ToolsMarquee() {
+  const row = [...skills, ...skills, ...skills];
+  return (
+    <div className="tools-marquee" aria-hidden="true">
+      <div className="tools-track">
+        {row.map((skill, i) => (
+          <span className="tool-chip" key={`${skill.name}-${i}`}>
+            <span className="skill-dot" style={{ background: skill.color }} />
+            {skill.name}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function Flagship() {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  return (
+    <section className="section flagship-section" id="flagship" ref={ref}>
+      <div className="flagship-progress-wrap" aria-hidden="true">
+        <motion.div className="flagship-progress" style={{ scaleX: scrollYProgress }} />
+      </div>
+      <div className="section-header reveal">
+        <div className="section-eyebrow"><EyebrowIcon /> Flagship Build</div>
+        <h2 className="section-title">{flagship.title}</h2>
+      </div>
+      <div className="flagship-stage reveal reveal-delay-1">
+        <div className="flagship-window" aria-hidden="true">
+          <div className="fw-bar">
+            <span /><span /><span />
+            <em>modern-fil-homes.vercel.app</em>
+          </div>
+          <div className="fw-body">
+            <div className="fw-hero">
+              <div className="fw-hero-line" />
+              <div className="fw-hero-line short" />
+              <div className="fw-hero-cta" />
+            </div>
+            <div className="fw-cards">
+              <div className="fw-card"><i /><b /><u /></div>
+              <div className="fw-card"><i /><b /><u /></div>
+              <div className="fw-card"><i /><b /><u /></div>
+            </div>
+          </div>
+        </div>
+        <div className="flagship-info">
+          <p>{flagship.desc}</p>
+          <div className="card-tags">
+            {flagship.tags.map((t) => (<span className="tag" key={t}>{t}</span>))}
+          </div>
+          <ul className="flagship-points">
+            {flagship.points.map((p) => (<li key={p}>{p}</li>))}
+          </ul>
+          <div className="hero-actions">
+            <a href={flagship.demo} target="_blank" rel="noopener" className="btn btn-primary">
+              <Link size={15} weight="Outline" color="white" /> Live Demo
+            </a>
+            <a href={flagship.code} target="_blank" rel="noopener" className="btn btn-ghost">
+              <IconGithub s={15} /> View Code
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Faq() {
+  const [open, setOpen] = useState(0);
+  return (
+    <section className="section" id="faq">
+      <div className="section-header reveal">
+        <div className="section-eyebrow"><EyebrowIcon /> FAQ</div>
+        <h2 className="section-title">Questions, Answered</h2>
+      </div>
+      <div className="faq-list reveal reveal-delay-1">
+        {faqs.map((f, i) => (
+          <div className={`faq-item ${open === i ? "open" : ""}`} key={f.q}>
+            <button className="faq-q" onClick={() => setOpen(open === i ? -1 : i)} aria-expanded={open === i}>
+              {f.q}
+              <span className="faq-chev">⌄</span>
+            </button>
+            <AnimatePresence initial={false}>
+              {open === i && (
+                <motion.div
+                  className="faq-a"
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <p>{f.a}</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function ScrollToTop() {
   const [visible, setVisible] = useState(false);
   useEffect(() => {
@@ -217,18 +285,15 @@ function ScrollToTop() {
   }, []);
   return (
     <motion.button
-      className="btn" style={{
-        position: "fixed", bottom: "24px", right: "24px", zIndex: 50,
+      className="btn scrolltop" style={{
+        position: "fixed", bottom: "24px", right: "24px", zIndex: 90,
         width: "40px", height: "40px", borderRadius: "50%", padding: 0,
         display: "flex", alignItems: "center", justifyContent: "center",
-        background: "var(--bg-card)", border: "1px solid var(--border)",
-        color: "var(--text-secondary)", cursor: "pointer",
-        boxShadow: "var(--shadow-md)",
       }}
       onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
       animate={{ scale: visible ? 1 : 0, opacity: visible ? 1 : 0 }}
       transition={{ duration: 0.3, ease: "backOut" }}
-      whileHover={{ color: "var(--accent)", borderColor: "var(--accent)" }}
+      whileHover={{ color: "var(--orange)", borderColor: "var(--orange)" }}
       aria-label="Scroll to top"
     >
       <ArrowUp size={16} weight="Outline" />
@@ -236,9 +301,9 @@ function ScrollToTop() {
   );
 }
 
-/* ===== Main Portfolio ===== */
+/* ===== Main Portfolio — BrewedOps-style rebuild ===== */
 export default function PortfolioV2() {
-  const [scrolled, setScrolled] = useState(false);
+  const [mobileMenu, setMobileMenu] = useState(false);
   const [formSent, setFormSent] = useState(false);
   const [darkMode, setDarkMode] = useState(() => {
     if (typeof window === "undefined") return false;
@@ -246,7 +311,7 @@ export default function PortfolioV2() {
     if (saved) return saved === "dark";
     return false;
   });
-  const activeSection = useActiveSection(["hero", "skills", "projects", "contact"]);
+  const activeSection = useActiveSection(["home", "about", "work", "services", "contact"]);
   useScrollReveal();
 
   useEffect(() => {
@@ -254,32 +319,26 @@ export default function PortfolioV2() {
     localStorage.setItem("theme-v2", darkMode ? "dark" : "light");
   }, [darkMode]);
 
-  useEffect(() => {
-    const handler = () => setScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", handler, { passive: true });
-    return () => window.removeEventListener("scroll", handler);
-  }, []);
-
-  const { count: projectCount, ref: projectRef } = useCountUp(4);
+  const { count: projectCount, ref: projectRef } = useCountUp(6);
   const { count: skillCount, ref: skillRef } = useCountUp(10);
 
   return (
     <>
       {/* Navigation */}
-      <nav className={scrolled ? "scrolled" : ""}>
+      <nav className={mobileMenu ? "open" : ""}>
         <div className="nav-inner">
-          <a href="#" className="logo">
+          <a href="#home" className="logo" onClick={() => setMobileMenu(false)}>
             <span>Houtarou</span>
             <span className="logo-accent">Des</span>
           </a>
-          <div style={{ display: "flex", alignItems: "center" }}>
-            <div className="nav-links">
-              {["skills", "projects", "contact"].map((id) => (
-                <a key={id} href={`#${id}`} className={activeSection === id ? "active" : ""}>
-                  {id.charAt(0).toUpperCase() + id.slice(1)}
-                </a>
-              ))}
-            </div>
+          <div className="nav-links">
+            {NAV_ITEMS.map((n) => (
+              <a key={n.id} href={`#${n.id}`} className={activeSection === n.id ? "active" : ""}>
+                {n.label}
+              </a>
+            ))}
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
             <a href="https://houtaroudes-game-portfolio.vercel.app" className="version-btn" target="_blank" rel="noopener">
               Pixel Portfolio
             </a>
@@ -291,192 +350,188 @@ export default function PortfolioV2() {
             >
               {darkMode ? <Sun size={18} weight="Outline" /> : <Moon size={18} weight="Outline" />}
             </button>
+            <button
+              className="nav-burger"
+              onClick={() => setMobileMenu(!mobileMenu)}
+              aria-label="Menu"
+              aria-expanded={mobileMenu}
+            >
+              <span /><span /><span />
+            </button>
           </div>
         </div>
       </nav>
 
       {/* Hero */}
-      <section className="hero" id="hero">
+      <section className="hero" id="home">
         <div className="hero-gradient" />
         <div className="hero-content">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <div className="hero-layout">
-              {/* Profile Picture with PixelTransition grid effect */}
-              <ProfilePicture />
-
-              {/* Hero text */}
-              <div className="hero-text-col">
-                <div className="hero-tag">
-                  <span>✦</span> Full-Stack Developer
-                </div>
-                <h1>
-                  Hi, I'm <span className="gradient-text">HoutarouDes</span>
-                </h1>
-                <h2>
-                  A college student passionate about web development — turning ideas into interactive experiences, one commit at a time. Based in the Philippines, specializing in full-stack development with Laravel, WordPress, and React.
-                </h2>
-                <div className="hero-actions">
-                  <a href="#projects" className="btn btn-primary">
-                    <Link size={15} weight="Outline" color="white" /> View Projects
-                  </a>
-                  <a href="#contact" className="btn btn-ghost">
-                    <Envelope size={15} weight="Outline" /> Get in Touch
-                  </a>
-                  <a href="https://github.com/houtaroudes" target="_blank" rel="noopener" className="btn btn-ghost">
-                    <IconGithub s={15} /> GitHub
-                  </a>
-                </div>
-
-                {/* Stats */}
-                <div className="hero-stats">
-                  <div>
-                    <div className="stat-value"><span ref={projectRef}>{projectCount}</span>+</div>
-                    <div className="stat-label">Projects</div>
-                  </div>
-                  <div>
-                    <div className="stat-value"><span ref={skillRef}>{skillCount}</span></div>
-                    <div className="stat-label">Technologies</div>
-                  </div>
-                  <div>
-                    <div className="stat-value">2025</div>
-                    <div className="stat-label">Started Coding</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Divider */}
-      <div className="divider" />
-
-      {/* Flagship case study */}
-      <Flagship />
-
-      {/* Tools marquee */}
-      <ToolsMarquee />
-
-      {/* Divider */}
-      <div className="divider" />
-
-      {/* Skills */}
-      <section className="section" id="skills">
-        <div className="section-header reveal">
-          <div className="section-eyebrow"><EyebrowIcon /> Technologies</div>
-          <h2 className="section-title">Skills & Tools</h2>
-          <p className="section-desc">Technologies I've been working with to build modern web applications.</p>
-        </div>
-        <div className="skills-grid reveal reveal-delay-1">
-          {skills.map((skill) => (
-            <motion.div
-              key={skill.name}
-              className="skill-badge"
-              whileHover={{ y: -3, scale: 1.02 }}
-              transition={{ type: "spring", stiffness: 300, damping: 15 }}
-            >
-              <span className="skill-dot" style={{ background: skill.color }} />
-              {skill.name}
-            </motion.div>
-          ))}
-        </div>
-        <GitHubHeatmap />
-      </section>
-
-      {/* Divider */}
-      <div className="divider" />
-
-      {/* Projects */}
-      <section className="section" id="projects">
-        <div className="section-header reveal">
-          <div className="section-eyebrow"><EyebrowIcon /> Work</div>
-          <h2 className="section-title">Featured Projects</h2>
-          <p className="section-desc">A collection of projects I've built — from full-stack apps to front-end experiments.</p>
-        </div>
-
-        <div className="featured-grid">
-        {projects.filter((p) => p.featured).map((project) => (
-          <motion.div
-            key={project.id}
-            className="featured-section reveal reveal-delay-1"
             initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="featured-card">
-              <div className="featured-badge-small">★ Featured Project</div>
-              <h3>{project.title}</h3>
-              <p>{project.desc}</p>
-              <div className="card-tags" style={{ justifyContent: "center" }}>
-                {project.tags.map((t) => (<span className="tag" key={t}>{t}</span>))}
-              </div>
-              <div className="hero-actions" style={{ justifyContent: "center" }}>
-                {project.demo && (
-                  <a href={project.demo} target="_blank" rel="noopener" className="btn btn-primary">
-                    <Link size={15} weight="Outline" color="white" /> Live Demo
-                  </a>
-                )}
-                <a href={project.code} target="_blank" rel="noopener" className="btn btn-ghost">
-                  <IconGithub s={15} /> View Code
-                </a>
-              </div>
+            <div className="hero-eyebrow"><span>✦</span> FULL-STACK DEVELOPER — PHILIPPINES</div>
+            <h1 className="hero-display">
+              Building the web,<br />
+              <span className="hero-outline">one commit</span> at a time.
+            </h1>
+            <p className="hero-sub">
+              Hi, I'm HoutarouDes — a college student turning ideas into interactive experiences.
+              Full-stack development with Laravel, WordPress, and React.
+            </p>
+            <div className="hero-actions">
+              <a href="#work" className="btn btn-primary">View My Work</a>
+              <a href="#contact" className="btn btn-ghost">Get in Touch</a>
             </div>
           </motion.div>
-        ))}
         </div>
+        <ToolsMarquee />
+      </section>
 
-        <div className="project-grid">
-          {projects.filter((p) => !p.featured).map((project, i) => (
-            <motion.div
-              key={project.id}
-              className="project-card reveal"
-              style={{ transitionDelay: `${0.1 + i * 0.1}s` }}
-              whileHover={{ y: -5 }}
-              transition={{ type: "spring", stiffness: 200, damping: 15 }}
-            >
-              <div className="card-top">
-                <span className="card-year">{project.year}</span>
-                <span className={`card-badge ${project.featured ? "featured-badge" : ""}`}>{project.type}</span>
+      {/* About */}
+      <section className="section about-section" id="about">
+        <div className="about-grid">
+          <div className="about-media reveal">
+            <ProfilePicture />
+            <div className="about-stats">
+              <div>
+                <div className="stat-value"><span ref={projectRef}>{projectCount}</span>+</div>
+                <div className="stat-label">Projects</div>
               </div>
-              <h3 className="card-title">{project.title}</h3>
-              <p className="card-desc">{project.desc}</p>
+              <div>
+                <div className="stat-value"><span ref={skillRef}>{skillCount}</span></div>
+                <div className="stat-label">Technologies</div>
+              </div>
+              <div>
+                <div className="stat-value">2025</div>
+                <div className="stat-label">Started Coding</div>
+              </div>
+            </div>
+          </div>
+          <div className="about-body">
+            <div className="section-eyebrow reveal"><EyebrowIcon /> About Me</div>
+            <h2 className="section-title reveal reveal-delay-1">Code, coffee, and curiosity.</h2>
+            <p className="about-lede reveal reveal-delay-2">
+              I'm a college student from the Philippines who fell in love with web development —
+              turning ideas into interactive experiences, one commit at a time.
+            </p>
+            <p className="about-text reveal reveal-delay-2">
+              I specialize in full-stack development with Laravel, WordPress, and React. I love the
+              whole journey: sketching the idea, building it out, and shipping it live. When I'm not
+              coding, I'm probably tweaking this portfolio or pushing commits at 2 AM.
+            </p>
+            <a href="https://github.com/houtaroudes" target="_blank" rel="noopener" className="btn btn-ghost reveal reveal-delay-3">
+              <IconGithub s={15} /> github.com/houtaroudes
+            </a>
+          </div>
+        </div>
+        <div className="about-heatmap reveal">
+          <div className="section-eyebrow"><EyebrowIcon /> GitHub Activity</div>
+          <GitHubHeatmap compact />
+        </div>
+      </section>
+
+      {/* Work — bento grid with flagship */}
+      <section className="section" id="work">
+        <div className="section-header reveal">
+          <div className="section-eyebrow"><EyebrowIcon /> Selected Work</div>
+          <h2 className="section-title">Projects</h2>
+        </div>
+        <Flagship />
+        <div className="bento-grid">
+          {projects.map((project, i) => (
+            <motion.a
+              key={project.id}
+              href={project.demo || project.code}
+              target="_blank"
+              rel="noopener"
+              className={`bento-card reveal ${i === 0 ? "bento-wide" : ""}`}
+              style={{ transitionDelay: `${0.05 * i}s` }}
+              whileHover={{ y: -5 }}
+              transition={{ type: "spring", stiffness: 250, damping: 18 }}
+            >
+              <div className="bc-top">
+                <span className="bc-type">{project.type}</span>
+                <span className="bc-year">{project.year}</span>
+              </div>
+              <h3 className="bc-title">{project.title}</h3>
+              <p className="bc-desc">{project.desc}</p>
               <div className="card-tags">
                 {project.tags.map((t) => (<span className="tag" key={t}>{t}</span>))}
               </div>
-              <div className="card-actions">
-                {project.demo && (
-                  <a href={project.demo} target="_blank" rel="noopener" className="card-link">
-                    <Link size={13} weight="Outline" /> Live Demo
-                  </a>
-                )}
-                <a href={project.code} target="_blank" rel="noopener" className="card-link">
-                  <IconGithub s={13} /> Source
-                </a>
+              <div className="bc-links">
+                {project.demo && <span className="bc-link"><Link size={12} weight="Outline" /> Demo</span>}
+                <span className="bc-link"><IconGithub s={12} /> Code</span>
               </div>
+            </motion.a>
+          ))}
+        </div>
+      </section>
+
+      {/* Services */}
+      <section className="section" id="services">
+        <div className="section-header reveal">
+          <div className="section-eyebrow"><EyebrowIcon /> What I Do</div>
+          <h2 className="section-title">Services</h2>
+        </div>
+        <div className="services-grid">
+          {services.map((s, i) => (
+            <motion.div
+              key={s.title}
+              className="service-card reveal"
+              style={{ transitionDelay: `${0.08 * i}s` }}
+              whileHover={{ y: -5 }}
+              transition={{ type: "spring", stiffness: 250, damping: 18 }}
+            >
+              <div className="sc-num">0{i + 1}</div>
+              <h3>{s.title}</h3>
+              <p>{s.desc}</p>
             </motion.div>
           ))}
         </div>
       </section>
 
-      {/* Divider */}
-      <div className="divider" />
+      {/* Method */}
+      <section className="section method-section">
+        <div className="section-header reveal">
+          <div className="section-eyebrow"><EyebrowIcon /> How It Works</div>
+          <h2 className="section-title">From idea to live, in three steps</h2>
+        </div>
+        <div className="method-grid">
+          {method.map((m, i) => (
+            <div className="method-step reveal" style={{ transitionDelay: `${0.1 * i}s` }} key={m.step}>
+              <div className="ms-step">{m.step}</div>
+              <h3>{m.title}</h3>
+              <p>{m.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <Faq />
 
       {/* Contact */}
       <section className="section" id="contact">
         <div className="section-header reveal">
           <div className="section-eyebrow"><EyebrowIcon /> Contact</div>
-          <h2 className="section-title">Let's Build Together</h2>
+          <h2 className="section-title">Let's build something together</h2>
           <p className="section-desc">Open for freelance gigs, school projects, or just talking shop about web dev.</p>
         </div>
-
-        <div className="contact-card reveal reveal-delay-1">
-          <h3>Get In Touch</h3>
-          <p>Have a project in mind? Send me a message and I'll get back to you.</p>
+        <div className="contact-split reveal reveal-delay-1">
+          <div className="contact-info-col">
+            <p className="contact-lede">
+              Have a project in mind? Send me a message and I'll get back to you as soon as I can.
+            </p>
+            <a href="mailto:houtaroudes@gmail.com" className="contact-email">
+              <Envelope size={15} weight="Outline" /> houtaroudes@gmail.com
+            </a>
+            <div className="contact-socials">
+              <a href="https://github.com/houtaroudes" target="_blank" rel="noopener"><IconGithub s={14} /> GitHub</a>
+              <a href="https://houtaroudes-game-portfolio.vercel.app" target="_blank" rel="noopener">Pixel Portfolio →</a>
+            </div>
+          </div>
           <form
             className="contact-form"
             onSubmit={async (e) => {
@@ -495,37 +550,30 @@ export default function PortfolioV2() {
               <>
                 <input type="text" name="name" placeholder="Your name" required />
                 <input type="email" name="email" placeholder="Your email" required />
-                <textarea name="message" placeholder="Your message..." required rows={3} />
+                <textarea name="message" placeholder="Tell me about your project..." required rows={4} />
                 <input type="hidden" name="_subject" value="New portfolio message!" />
                 <input type="text" name="_gotcha" style={{ display: "none" }} />
-                <button type="submit" className="btn btn-primary" style={{ justifyContent: "center" }}>
-                  <Envelope size={15} weight="Outline" color="white" /> Send Message
-                </button>
+                <button type="submit" className="btn btn-primary">Send Message</button>
               </>
             ) : (
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
-                style={{ textAlign: "center", padding: "20px", background: "var(--success-bg)", borderRadius: "var(--radius-md)", border: "1px solid var(--success-border)" }}
+                className="form-success"
               >
-                <div style={{ fontSize: "1.75rem", marginBottom: "6px" }}>✓</div>
-                <h4 style={{ fontWeight: "600", marginBottom: "4px", fontSize: "0.95rem" }}>Message Sent!</h4>
-                <p style={{ fontSize: "0.8rem", color: "var(--text-secondary)" }}>Thanks for reaching out. I'll reply as soon as possible.</p>
+                <div>✓</div>
+                <h4>Message Sent!</h4>
+                <p>Thanks for reaching out. I'll reply as soon as possible.</p>
               </motion.div>
             )}
           </form>
-          <div className="contact-info">
-            <span>Or reach me directly:</span>
-            <a href="mailto:houtaroudes@gmail.com"><Envelope size={13} weight="Outline" /> houtaroudes@gmail.com</a>
-          </div>
         </div>
       </section>
 
       {/* Footer */}
       <footer>
         <div className="footer-inner">
-          <p>Designed & built by HoutarouDes</p>
-          <p style={{ marginTop: "4px", fontSize: "0.75rem" }}>Built with passion, powered by curiosity — no templates, just code.</p>
+          <p>© {new Date().getFullYear()} HoutarouDes — designed & built with code, not templates.</p>
         </div>
       </footer>
 
