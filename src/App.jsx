@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { motion } from "framer-motion";
+import { motion, useScroll } from "framer-motion";
 import { Sun, Moon, ArrowUp, Envelope, Link } from "reicon-react";
 
 const IconGithub = ({ s = 16 }) => (
@@ -32,6 +32,81 @@ const skills = [
   { name: "PHP", color: "#777bb3" }, { name: "MySQL", color: "#4479a1" },
   { name: "Git", color: "#f05032" }, { name: "Vite", color: "#a29bfe" }, { name: "C#", color: "#68217a" }, { name: "C++", color: "#00599c" },
 ];
+
+/* ===== Tools marquee (BrewedOps-style scrolling chip row) ===== */
+function ToolsMarquee() {
+  const row = [...skills, ...skills];
+  return (
+    <div className="tools-marquee" aria-hidden="true">
+      <div className="tools-track">
+        {row.map((skill, i) => (
+          <span className="tool-chip" key={`${skill.name}-${i}`}>
+            <span className="skill-dot" style={{ background: skill.color }} />
+            {skill.name}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ===== Flagship case study (scroll-progress showcase) ===== */
+function Flagship() {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  const project = projects.find((p) => p.id === 6);
+  return (
+    <section className="section flagship-section" id="flagship" ref={ref}>
+      <div className="flagship-progress-wrap" aria-hidden="true">
+        <motion.div className="flagship-progress" style={{ scaleX: scrollYProgress }} />
+      </div>
+      <div className="section-header reveal">
+        <div className="section-eyebrow"><EyebrowIcon /> Flagship Project</div>
+        <h2 className="section-title">Modern Filipino Homes Platform</h2>
+        <p className="section-desc">My most complete build — a secure proptech platform, live in production.</p>
+      </div>
+      <div className="flagship-stage reveal reveal-delay-1">
+        <div className="flagship-window" aria-hidden="true">
+          <div className="fw-bar">
+            <span /><span /><span />
+            <em>modern-fil-homes.vercel.app</em>
+          </div>
+          <div className="fw-body">
+            <div className="fw-hero">
+              <div className="fw-hero-line" />
+              <div className="fw-hero-line short" />
+              <div className="fw-hero-cta" />
+            </div>
+            <div className="fw-cards">
+              <div className="fw-card"><i /><b /><u /></div>
+              <div className="fw-card"><i /><b /><u /></div>
+              <div className="fw-card"><i /><b /><u /></div>
+            </div>
+          </div>
+        </div>
+        <div className="flagship-info">
+          <p>{project.desc}</p>
+          <div className="card-tags">
+            {project.tags.map((t) => (<span className="tag" key={t}>{t}</span>))}
+          </div>
+          <ul className="flagship-points">
+            <li>Live & deployed with security headers (CSP, HSTS)</li>
+            <li>Full-stack: tRPC API, MySQL database, lead capture</li>
+            <li>Financing calculator, AI chat, property showcase</li>
+          </ul>
+          <div className="hero-actions">
+            <a href={project.demo} target="_blank" rel="noopener" className="btn btn-primary">
+              <Link size={15} weight="Outline" color="white" /> Live Demo
+            </a>
+            <a href={project.code} target="_blank" rel="noopener" className="btn btn-ghost">
+              <IconGithub s={15} /> View Code
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
 
 /* ===== Hooks ===== */
 function useScrollReveal() {
@@ -276,6 +351,15 @@ export default function PortfolioV2() {
           </motion.div>
         </div>
       </section>
+
+      {/* Divider */}
+      <div className="divider" />
+
+      {/* Flagship case study */}
+      <Flagship />
+
+      {/* Tools marquee */}
+      <ToolsMarquee />
 
       {/* Divider */}
       <div className="divider" />

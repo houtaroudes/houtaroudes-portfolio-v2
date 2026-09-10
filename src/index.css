@@ -404,3 +404,102 @@ footer p{font-size:0.8rem;color:var(--text-tertiary)}
 .gh-heatmap-error{display:flex;flex-direction:column;align-items:center;gap:6px;padding:28px;color:var(--text-secondary);font-size:0.85rem;}
 .gh-heatmap-error a{color:var(--accent);text-decoration:none;font-weight:600;}
 .gh-heatmap-error a:hover{text-decoration:underline;}
+
+/* ===== Tools marquee ===== */
+.tools-marquee{
+  overflow:hidden;
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  padding:18px 0;
+  margin:8px 0;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);
+}
+.tools-track{
+  display:flex;gap:14px;width:max-content;
+  animation:toolsScroll 26s linear infinite;
+}
+.tools-marquee:hover .tools-track{animation-play-state:paused}
+.tool-chip{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:0.82rem;font-weight:600;color:var(--text-secondary);
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:var(--radius-pill);
+  padding:8px 16px;
+  white-space:nowrap;
+  transition:border-color var(--dur-fast,0.18s) ease,color var(--dur-fast,0.18s) ease;
+}
+.tool-chip:hover{border-color:var(--border-hover);color:var(--text)}
+@keyframes toolsScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ===== Flagship case study ===== */
+.flagship-section{position:relative}
+.flagship-progress-wrap{
+  position:absolute;top:0;left:0;right:0;height:3px;
+  background:var(--border);border-radius:3px;overflow:hidden;
+}
+.flagship-progress{
+  height:100%;width:100%;
+  background:linear-gradient(90deg,var(--accent),var(--accent-light));
+  transform-origin:0 50%;
+  transform:scaleX(0);
+}
+.flagship-stage{
+  display:grid;grid-template-columns:1.25fr 1fr;gap:34px;align-items:center;
+}
+.flagship-window{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  box-shadow:var(--shadow-lg);
+  overflow:hidden;
+}
+.fw-bar{
+  display:flex;align-items:center;gap:6px;
+  padding:10px 14px;border-bottom:1px solid var(--border);
+  background:var(--bg-card-hover);
+}
+.fw-bar span{width:9px;height:9px;border-radius:50%;background:var(--text-tertiary);opacity:.45}
+.fw-bar span:first-child{background:#f87171;opacity:.9}
+.fw-bar span:nth-child(2){background:#fbbf24;opacity:.9}
+.fw-bar span:nth-child(3){background:#34d399;opacity:.9}
+.fw-bar em{
+  margin-left:10px;font-style:normal;font-size:0.68rem;
+  font-family:var(--font-mono);color:var(--text-tertiary);
+}
+.fw-body{padding:22px}
+.fw-hero{padding:8px 6px 20px}
+.fw-hero-line{height:20px;width:72%;border-radius:8px;background:linear-gradient(90deg,var(--accent),var(--accent-light));opacity:.85;margin-bottom:10px}
+.fw-hero-line.short{width:46%;height:12px;background:var(--bg-card-hover);border:1px solid var(--border)}
+.fw-hero-cta{width:110px;height:30px;border-radius:var(--radius-pill);background:var(--accent);opacity:.9;margin-top:14px}
+.fw-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.fw-card{
+  border:1px solid var(--border);border-radius:var(--radius-md);
+  padding:12px;display:flex;flex-direction:column;gap:8px;
+  background:var(--bg);
+}
+.fw-card i{height:52px;border-radius:8px;background:var(--accent-glow)}
+.fw-card b{height:10px;width:70%;border-radius:5px;background:var(--text);opacity:.75}
+.fw-card u{height:8px;width:90%;border-radius:4px;background:var(--text-tertiary);opacity:.5;text-decoration:none}
+.flagship-info p{font-size:0.92rem;color:var(--text-secondary);margin-bottom:14px}
+.flagship-points{
+  margin:16px 0 20px;padding-left:0;list-style:none;
+  display:flex;flex-direction:column;gap:8px;
+}
+.flagship-points li{
+  font-size:0.84rem;color:var(--text-secondary);
+  padding-left:20px;position:relative;
+}
+.flagship-points li::before{
+  content:"✦";position:absolute;left:0;top:0;
+  color:var(--accent);font-size:0.75rem;
+}
+
+@media (max-width:860px){
+  .flagship-stage{grid-template-columns:1fr;gap:24px}
+  .fw-cards{grid-template-columns:repeat(2,1fr)}
+}
+@media (prefers-reduced-motion:reduce){
+  .tools-track{animation:none}
+}
