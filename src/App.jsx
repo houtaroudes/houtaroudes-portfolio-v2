@@ -13,6 +13,7 @@ const EyebrowIcon = () => (
   </svg>
 );
 import PixelTransition from "./components/PixelTransition";
+import GitHubHeatmap from "./components/GitHubHeatmap";
 import "./components/PixelTransition.css";
 
 /* ===== Data ===== */
@@ -299,6 +300,7 @@ export default function PortfolioV2() {
             </motion.div>
           ))}
         </div>
+        <GitHubHeatmap />
       </section>
 
       {/* Divider */}
