@@ -1,6 +1,8 @@
 import { useEffect, useState, useRef } from "react";
-import { motion, AnimatePresence, useScroll } from "framer-motion";
-import { Sun, Moon, ArrowUp, Envelope, Link } from "reicon-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Sun, Moon, ArrowUp, Envelope, Home, User, Briefcase, MessageCircle, Gamepad, Play, Camera, Coffee, Box, Code, Cpu } from "reicon-react";
+import TechStackModal from "./components/TechStackModal";
+import { TECH_STACK_PREVIEW, TOTAL_TECH_SKILLS } from "./data/techStack.js";
 
 const IconGithub = ({ s = 16 }) => (
   <svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -12,38 +14,41 @@ const EyebrowIcon = () => (
     <path d="M4 0L8 4L4 8L0 4Z"/>
   </svg>
 );
+const GlobeIcon = () => (
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="10" />
+    <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+  </svg>
+);
+const ExtIcon = () => (
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+    <polyline points="15 3 21 3 21 9" />
+    <line x1="10" y1="14" x2="21" y2="3" />
+  </svg>
+);
 import PixelTransition from "./components/PixelTransition";
 import GitHubHeatmap from "./components/GitHubHeatmap";
 import "./components/PixelTransition.css";
 
 /* ===== Data ===== */
 const projects = [
-  { id: 1, title: "Motion Website", desc: "A front-end inspiration hub for exploring layout and animation ideas.", tags: ["HTML", "CSS", "JS"], demo: "https://motion-website-des.vercel.app", code: "https://github.com/houtaroudes/motion-website", type: "Full Stack", year: "2025" },
-  { id: 2, title: "PixelPodWeb", desc: "A photobooth web app with PHP + MySQL backend — built solo as a school project.", tags: ["PHP", "MySQL", "CSS", "JS"], demo: "https://pixelpodweb.vercel.app", code: "https://github.com/houtaroudes/PixelPodWeb", type: "Full Stack", year: "2025" },
-  { id: 3, title: "Houtarou Cafe", desc: "A concept cafe site with minimalist design — ordering flow and reservation system.", tags: ["HTML", "CSS", "JS"], code: "https://github.com/houtaroudes/houtarou-cafe", type: "Frontend", year: "2026" },
-  { id: 4, title: "Learning WebDev Hub", desc: "My gamified learning hub with 26+ exercises, live previews, and code challenges!", tags: ["React", "Vite", "HTML", "CSS"], demo: "https://random-learning-webdev-site.vercel.app", code: "https://github.com/houtaroudes/random-learning-webdev-site", type: "Full Stack", year: "2026" },
-  { id: 5, title: "Modern Filipino Homes", desc: "MONO-inspired architecture landing page with word-by-word scroll reveals, house carousel, and phase-built gallery.", tags: ["React", "Vite", "Framer Motion"], demo: "https://modern-filipino-homes.vercel.app", code: "https://github.com/houtaroudes/Modern-Filipino-Homes", type: "Frontend", year: "2026" },
+  { id: 1, title: "Motion Website", desc: "A front-end inspiration hub for exploring layout and animation ideas.", tags: ["HTML", "CSS", "JS"], demo: "https://motion-website-des.vercel.app", code: "https://github.com/houtaroudes/motion-website", type: "Frontend", year: "2025", shot: "/images/shot-motion.png", Icon: Play },
+  { id: 2, title: "PixelPodWeb", desc: "A photobooth web app with PHP + MySQL backend — built solo as a school project.", tags: ["PHP", "MySQL", "CSS", "JS"], demo: "https://pixelpodweb.vercel.app", code: "https://github.com/houtaroudes/PixelPodWeb", type: "Full Stack", year: "2025", Icon: Camera },
+  { id: 3, title: "Houtarou Cafe", desc: "A concept cafe site with minimalist design — ordering flow and reservation system.", tags: ["HTML", "CSS", "JS"], code: "https://github.com/houtaroudes/houtarou-cafe", type: "Frontend", year: "2026", Icon: Coffee },
+  { id: 4, title: "Learning WebDev Hub", desc: "My gamified learning hub — 26+ quests, live previews, and code challenges. Learn by doing!", tags: ["React", "Vite", "HTML", "CSS"], demo: "https://random-learning-webdev-site.vercel.app", code: "https://github.com/houtaroudes/random-learning-webdev-site", type: "Interactive Learning", year: "2026", shot: "/images/shot-learning.png", Icon: Gamepad },
+  { id: 5, title: "Modern Filipino Homes", desc: "A secure proptech platform — property showcase, financing calculator, AI chat assistant, and secure lead capture, all shipped live.", tags: ["React", "Vite", "tRPC", "MySQL", "Tailwind"], demo: "https://modern-fil-homes.vercel.app", code: "https://github.com/houtaroudes/modern-fil-homes", type: "Full Stack Platform", year: "2026", shot: "/images/shot-mfh.png", Icon: Home },
 ];
 
+const byId = (id) => projects.find((p) => p.id === id);
+
+const highlight = byId(4); // Learning WebDev Hub — the highlight build
+
 const flagship = {
-  title: "Modern Filipino Homes Platform",
-  desc: "My most complete build — a secure proptech platform: property showcase, interactive financing calculator, climate resilience matrix, AI chat assistant, and secure lead capture.",
   tags: ["React", "Vite", "tRPC", "MySQL", "Tailwind"],
   demo: "https://modern-fil-homes.vercel.app",
   code: "https://github.com/houtaroudes/modern-fil-homes",
-  points: [
-    "Live & deployed with security headers (CSP, HSTS)",
-    "Full-stack: tRPC API, MySQL database, secure lead capture",
-    "Financing calculator, AI chat assistant, property showcase",
-  ],
 };
-
-const skills = [
-  { name: "HTML5", color: "#e34f26" }, { name: "CSS3", color: "#1572b6" },
-  { name: "JavaScript", color: "#f7df1e" }, { name: "React", color: "#61dafb" },
-  { name: "PHP", color: "#777bb3" }, { name: "MySQL", color: "#4479a1" },
-  { name: "Git", color: "#f05032" }, { name: "Vite", color: "#a29bfe" }, { name: "C#", color: "#68217a" }, { name: "C++", color: "#00599c" },
-];
 
 const services = [
   { title: "Full-Stack Web Apps", desc: "React front-ends with real backends — APIs, databases, auth. From idea to deployed product." },
@@ -65,11 +70,16 @@ const faqs = [
 ];
 
 const NAV_ITEMS = [
-  { id: "home", label: "Home" },
-  { id: "about", label: "About" },
-  { id: "work", label: "Work" },
-  { id: "services", label: "Services" },
-  { id: "contact", label: "Contact" },
+  { id: "home", label: "Home", Icon: Home },
+  { id: "about", label: "About", Icon: User },
+  { id: "services", label: "Services", Icon: Briefcase },
+  { id: "contact", label: "FAQs / Contact", Icon: MessageCircle },
+];
+
+const SIDEBAR_SOCIALS = [
+  { label: "GitHub", href: "https://github.com/houtaroudes" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/" },
+  { label: "Pixel Portfolio", href: "https://houtaroudes-game-portfolio.vercel.app" },
 ];
 
 /* ===== Hooks ===== */
@@ -142,7 +152,6 @@ function useCountUp(target, duration = 1500) {
 
 /* ===== Components ===== */
 function ProfilePicture() {
-  const size = "clamp(110px, 13vw, 170px)";
   return (
     <div className="pfp-container">
       <PixelTransition
@@ -150,14 +159,14 @@ function ProfilePicture() {
           <img
             src="/images/pfp-default.jpg"
             alt="HoutarouDes"
-            style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%" }}
+            style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "22px" }}
           />
         }
         secondContent={
           <img
             src="/images/pfp-hover.jpg"
             alt="HoutarouDes"
-            style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%" }}
+            style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "22px" }}
           />
         }
         gridSize={12}
@@ -166,78 +175,153 @@ function ProfilePicture() {
         once={false}
         aspectRatio="100%"
         className="pfp-pixel-transition"
-        style={{ width: size, height: size, borderRadius: "50%" }}
+        style={{ width: "100%", height: "100%", borderRadius: "22px" }}
       />
     </div>
   );
 }
 
-function ToolsMarquee() {
-  const row = [...skills, ...skills, ...skills];
+function Sidebar({ active, onNavigate, open, dark, onToggleTheme }) {
   return (
-    <div className="tools-marquee" aria-hidden="true">
-      <div className="tools-track">
-        {row.map((skill, i) => (
-          <span className="tool-chip" key={`${skill.name}-${i}`}>
-            <span className="skill-dot" style={{ background: skill.color }} />
-            {skill.name}
-          </span>
-        ))}
+    <aside className={`sidebar ${open ? "open" : ""}`} aria-label="Sidebar">
+      <a href="#home" className="sidebar-pfp" aria-label="Go to top">
+        <ProfilePicture />
+      </a>
+      <div className="sidebar-identity">
+        <h2 className="sidebar-name">
+          HoutarouDes
+          <svg className="sidebar-verified" width="16" height="16" viewBox="0 0 24 24" fill="#4f8ff7" aria-label="Verified">
+            <path d="M12 1.5l2.6 2 3.2-.4 1.2 3 2.9 1.5-.8 3.2.8 3.2-2.9 1.5-1.2 3-3.2-.4-2.6 2-2.6-2-3.2.4-1.2-3L3.1 14l.8-3.2-.8-3.2L6 6.1l1.2-3 3.2.4z" />
+            <path d="M10.6 15.9l-3.3-3.3 1.3-1.3 2 2 4.8-4.8 1.3 1.3z" fill="#fff" stroke="none" />
+          </svg>
+        </h2>
+        <p className="sidebar-handle">@houtaroudes · Full-Stack Dev</p>
       </div>
-    </div>
+      <div className="sidebar-socials">
+        {SIDEBAR_SOCIALS.map((s) => (
+          <a key={s.label} href={s.href} target="_blank" rel="noopener" className="sidebar-social" title={s.label} aria-label={s.label}>
+            {s.label === "GitHub" ? <IconGithub s={16} /> : s.label === "LinkedIn" ? <span className="sidebar-social-glyph">in</span> : <GlobeIcon />}
+          </a>
+        ))}
+        <button
+          className="sidebar-social theme"
+          onClick={onToggleTheme}
+          title={dark ? "Light Mode" : "Dark Mode"}
+          aria-label="Toggle theme"
+        >
+          {dark ? <Sun size={16} weight="Outline" /> : <Moon size={16} weight="Outline" />}
+        </button>
+      </div>
+      <div className="sidebar-divider" />
+      <nav className="sidebar-nav">
+        {NAV_ITEMS.map((n) => (
+          <a key={n.id} href={`#${n.id}`} className={`sidebar-link ${active === n.id ? "active" : ""}`} onClick={onNavigate}>
+            <span className="sidebar-link-icon"><n.Icon size={19} weight="Outline" /></span>
+            {n.label}
+          </a>
+        ))}
+      </nav>
+    </aside>
   );
 }
 
-function Flagship() {
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+function WorkIcon({ icon: Icon, size = 20 }) {
+  return <Icon size={size} weight="Outline" style={{ color: "var(--orange)" }} />;
+}
+
+function WorkPanel() {
+  const [techStackOpen, setTechStackOpen] = useState(false);
+
   return (
-    <section className="section flagship-section" id="flagship" ref={ref}>
-      <div className="flagship-progress-wrap" aria-hidden="true">
-        <motion.div className="flagship-progress" style={{ scaleX: scrollYProgress }} />
-      </div>
-      <div className="section-header reveal">
-        <div className="section-eyebrow"><EyebrowIcon /> Flagship Build</div>
-        <h2 className="section-title">{flagship.title}</h2>
-      </div>
-      <div className="flagship-stage reveal reveal-delay-1">
-        <div className="flagship-window" aria-hidden="true">
-          <div className="fw-bar">
-            <span /><span /><span />
-            <em>modern-fil-homes.vercel.app</em>
-          </div>
-          <div className="fw-body">
-            <div className="fw-hero">
-              <div className="fw-hero-line" />
-              <div className="fw-hero-line short" />
-              <div className="fw-hero-cta" />
-            </div>
-            <div className="fw-cards">
-              <div className="fw-card"><i /><b /><u /></div>
-              <div className="fw-card"><i /><b /><u /></div>
-              <div className="fw-card"><i /><b /><u /></div>
-            </div>
-          </div>
-        </div>
-        <div className="flagship-info">
-          <p>{flagship.desc}</p>
+    <>
+    <div className="work-panel reveal">
+      {/* Big card — Learning WebDev Hub highlight with real screenshot */}
+      <a className="wcard wcard-big" href={highlight.demo} target="_blank" rel="noopener">
+        <div className="wc-left">
+          <span className="wc-icon"><WorkIcon icon={highlight.Icon} /></span>
+          <h3 className="wc-title">Learning WebDev Hub</h3>
+          <p className="wc-desc">{highlight.desc}</p>
           <div className="card-tags">
-            {flagship.tags.map((t) => (<span className="tag" key={t}>{t}</span>))}
-          </div>
-          <ul className="flagship-points">
-            {flagship.points.map((p) => (<li key={p}>{p}</li>))}
-          </ul>
-          <div className="hero-actions">
-            <a href={flagship.demo} target="_blank" rel="noopener" className="btn btn-primary">
-              <Link size={15} weight="Outline" color="white" /> Live Demo
-            </a>
-            <a href={flagship.code} target="_blank" rel="noopener" className="btn btn-ghost">
-              <IconGithub s={15} /> View Code
-            </a>
+            {highlight.tags.map((t) => (<span className="tag" key={t}>{t}</span>))}
           </div>
         </div>
+        <div className="wc-shot">
+          <img src={highlight.shot} alt="Learning WebDev Hub — Random Learning WebDev" loading="lazy" />
+        </div>
+      </a>
+
+      {/* Mid card — Motion Website with real screenshot */}
+      <a className="wcard wcard-mid" href={byId(1).demo} target="_blank" rel="noopener">
+        <span className="wc-icon"><WorkIcon icon={byId(1).Icon} /></span>
+        <h3 className="wc-title">Motion Website</h3>
+        <p className="wc-desc">{byId(1).desc}</p>
+        <div className="wc-shot">
+          <img src={byId(1).shot} alt="Motion Website — Where Motion Meets Design" loading="lazy" />
+        </div>
+      </a>
+
+      {/* Mini cards column */}
+      <div className="wcard-minis">
+        {[byId(2), byId(3)].map((project) => (
+          <a key={project.id} className="wcard wcard-mini" href={project.demo || project.code} target="_blank" rel="noopener">
+            <span className="wc-icon sm"><WorkIcon icon={project.Icon} size={17} /></span>
+            <div className="wcm-body">
+              <div className="wc-eyebrow">{project.type}</div>
+              <div className="wcm-title">{project.title} <ExtIcon /></div>
+              <p className="wc-desc">{project.desc}</p>
+            </div>
+          </a>
+        ))}
+        <a className="wcard wcard-mini" href="https://github.com/houtaroudes?tab=repositories" target="_blank" rel="noopener">
+          <span className="wc-icon sm"><WorkIcon icon={Code} size={17} /></span>
+          <div className="wcm-body">
+            <div className="wc-eyebrow">More Builds</div>
+            <div className="wcm-title">All Repositories <ExtIcon /></div>
+            <p className="wc-desc">Experiments, school projects, and everything else on GitHub.</p>
+          </div>
+        </a>
       </div>
-    </section>
+
+      {/* Row 2 */}
+      <a className="wcard wcard-sites" href={byId(5).demo} target="_blank" rel="noopener">
+        <span className="wc-icon"><WorkIcon icon={byId(5).Icon} /></span>
+        <h3 className="wc-title">Modern Filipino Homes</h3>
+        <p className="wc-desc">A secure proptech platform — financing calculator, AI assistant, lead capture.</p>
+        <div className="wc-shot">
+          <img src={byId(5).shot} alt="Modern Filipino Homes — Minimalist Homes, Designed for the Modern Filipino" loading="lazy" />
+        </div>
+      </a>
+
+      <div className="wcard wcard-apps">
+        <span className="wc-icon"><WorkIcon icon={Box} /></span>
+        <h3 className="wc-title">Tools and Experiments</h3>
+        <p className="wc-desc">Real builds wired to real data — open one.</p>
+        <div className="app-pills">
+          <a className="app-pill" href={byId(2).demo} target="_blank" rel="noopener"><WorkIcon icon={byId(2).Icon} size={15} /> PixelPodWeb <i className="dot" /></a>
+          <a className="app-pill" href={byId(3).code} target="_blank" rel="noopener"><WorkIcon icon={byId(3).Icon} size={15} /> Houtarou Cafe</a>
+          <a className="app-pill" href={flagship.code} target="_blank" rel="noopener"><WorkIcon icon={Code} size={15} /> Platform Source</a>
+        </div>
+      </div>
+
+      <button
+        type="button"
+        className="wcard wcard-wide"
+        onClick={() => setTechStackOpen(true)}
+        aria-haspopup="dialog"
+        aria-label="Open my tech stack and skills"
+      >
+        <span className="wc-icon"><WorkIcon icon={Cpu} /></span>
+        <h3 className="wc-title">My Tech Stack</h3>
+        <p className="wc-desc">The languages, frameworks, and tools behind every build — tap to open the full stack.</p>
+        <div className="card-tags">
+          {TECH_STACK_PREVIEW.map((t) => (<span className="tag" key={t}>{t}</span>))}
+          <span className="tag tag-more">+{TOTAL_TECH_SKILLS - TECH_STACK_PREVIEW.length} more</span>
+        </div>
+      </button>
+    </div>
+
+    <TechStackModal open={techStackOpen} onClose={() => setTechStackOpen(false)} />
+    </>
   );
 }
 
@@ -303,7 +387,7 @@ function ScrollToTop() {
 
 /* ===== Main Portfolio — BrewedOps-style rebuild ===== */
 export default function PortfolioV2() {
-  const [mobileMenu, setMobileMenu] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [formSent, setFormSent] = useState(false);
   const [darkMode, setDarkMode] = useState(() => {
     if (typeof window === "undefined") return false;
@@ -311,7 +395,7 @@ export default function PortfolioV2() {
     if (saved) return saved === "dark";
     return false;
   });
-  const activeSection = useActiveSection(["home", "about", "work", "services", "contact"]);
+  const activeSection = useActiveSection(["home", "about", "services", "contact"]);
   useScrollReveal();
 
   useEffect(() => {
@@ -319,82 +403,80 @@ export default function PortfolioV2() {
     localStorage.setItem("theme-v2", darkMode ? "dark" : "light");
   }, [darkMode]);
 
+  const handleNavClick = () => setSidebarOpen(false);
+
   const { count: projectCount, ref: projectRef } = useCountUp(6);
   const { count: skillCount, ref: skillRef } = useCountUp(10);
 
   return (
     <>
-      {/* Navigation */}
-      <nav className={mobileMenu ? "open" : ""}>
-        <div className="nav-inner">
-          <a href="#home" className="logo" onClick={() => setMobileMenu(false)}>
-            <span>Houtarou</span>
-            <span className="logo-accent">Des</span>
-          </a>
-          <div className="nav-links">
-            {NAV_ITEMS.map((n) => (
-              <a key={n.id} href={`#${n.id}`} className={activeSection === n.id ? "active" : ""}>
-                {n.label}
-              </a>
-            ))}
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <a href="https://houtaroudes-game-portfolio.vercel.app" className="version-btn" target="_blank" rel="noopener">
-              Pixel Portfolio
-            </a>
-            <button
-              className="theme-toggle"
-              onClick={() => setDarkMode(!darkMode)}
-              title={darkMode ? "Light Mode" : "Dark Mode"}
-              aria-label="Toggle theme"
-            >
-              {darkMode ? <Sun size={18} weight="Outline" /> : <Moon size={18} weight="Outline" />}
-            </button>
-            <button
-              className="nav-burger"
-              onClick={() => setMobileMenu(!mobileMenu)}
-              aria-label="Menu"
-              aria-expanded={mobileMenu}
-            >
-              <span /><span /><span />
-            </button>
-          </div>
-        </div>
-      </nav>
+      {/* Mobile top bar */}
+      <header className={`mobile-bar ${sidebarOpen ? "open" : ""}`}>
+        <a href="#home" className="logo" onClick={handleNavClick}>
+          <span>Houtarou</span>
+          <span className="logo-accent">Des</span>
+        </a>
+        <button
+          className="nav-burger"
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+          aria-label="Menu"
+          aria-expanded={sidebarOpen}
+        >
+          <span /><span /><span />
+        </button>
+      </header>
 
-      {/* Hero */}
+      {/* Sidebar backdrop (mobile) */}
+      <div className={`sidebar-backdrop ${sidebarOpen ? "show" : ""}`} onClick={() => setSidebarOpen(false)} />
+
+      <Sidebar
+        active={activeSection}
+        onNavigate={handleNavClick}
+        open={sidebarOpen}
+        dark={darkMode}
+        onToggleTheme={() => setDarkMode(!darkMode)}
+      />
+
+      {/* Main column (right of sidebar) */}
+      <div className="main-col">
+
+      {/* Home — Projects showcase (BrewedOps style) */}
       <section className="hero" id="home">
-        <div className="hero-gradient" />
+        <svg className="hero-doodles" aria-hidden="true" preserveAspectRatio="none" viewBox="0 0 1200 800">
+          <path d="M-80 620 C 260 300, 620 760, 1280 320" />
+          <path d="M300 -60 C 520 240, 980 120, 1300 420" />
+        </svg>
         <div className="hero-content">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="hero-eyebrow"><span>✦</span> FULL-STACK DEVELOPER — PHILIPPINES</div>
-            <h1 className="hero-display">
-              Building the web,<br />
-              <span className="hero-outline">one commit</span> at a time.
-            </h1>
-            <p className="hero-sub">
-              Hi, I'm HoutarouDes — a college student turning ideas into interactive experiences.
-              Full-stack development with Laravel, WordPress, and React.
-            </p>
-            <div className="hero-actions">
-              <a href="#work" className="btn btn-primary">View My Work</a>
-              <a href="#contact" className="btn btn-ghost">Get in Touch</a>
-            </div>
+            <div className="hero-eyebrow">Projects</div>
+            <h1 className="hero-display">Real apps, sites and builds you can open.</h1>
+            <p className="hero-sub">Everything here shipped. Open a card to walk through the work at full size.</p>
           </motion.div>
+          <div className="work-pill" aria-hidden="true"><span>🖐 Click a card to open it</span></div>
+          <WorkPanel />
         </div>
-        <ToolsMarquee />
       </section>
 
       {/* About */}
       <section className="section about-section" id="about">
         <div className="about-grid">
-          <div className="about-media reveal">
-            <ProfilePicture />
-            <div className="about-stats">
+          <div className="about-body">
+            <div className="section-eyebrow reveal"><EyebrowIcon /> About Me</div>
+            <h2 className="section-title reveal reveal-delay-1">Code, coffee, and curiosity.</h2>
+            <p className="about-lede reveal reveal-delay-2">
+              I'm a college student from the Philippines who fell in love with web development —
+              turning ideas into interactive experiences, one commit at a time.
+            </p>
+            <p className="about-text reveal reveal-delay-2">
+              I specialize in full-stack development with Laravel, WordPress, and React. I love the
+              whole journey: sketching the idea, building it out, and shipping it live. When I'm not
+              coding, I'm probably tweaking this portfolio or pushing commits at 2 AM.
+            </p>
+            <div className="about-stats reveal reveal-delay-3">
               <div>
                 <div className="stat-value"><span ref={projectRef}>{projectCount}</span>+</div>
                 <div className="stat-label">Projects</div>
@@ -408,19 +490,6 @@ export default function PortfolioV2() {
                 <div className="stat-label">Started Coding</div>
               </div>
             </div>
-          </div>
-          <div className="about-body">
-            <div className="section-eyebrow reveal"><EyebrowIcon /> About Me</div>
-            <h2 className="section-title reveal reveal-delay-1">Code, coffee, and curiosity.</h2>
-            <p className="about-lede reveal reveal-delay-2">
-              I'm a college student from the Philippines who fell in love with web development —
-              turning ideas into interactive experiences, one commit at a time.
-            </p>
-            <p className="about-text reveal reveal-delay-2">
-              I specialize in full-stack development with Laravel, WordPress, and React. I love the
-              whole journey: sketching the idea, building it out, and shipping it live. When I'm not
-              coding, I'm probably tweaking this portfolio or pushing commits at 2 AM.
-            </p>
             <a href="https://github.com/houtaroudes" target="_blank" rel="noopener" className="btn btn-ghost reveal reveal-delay-3">
               <IconGithub s={15} /> github.com/houtaroudes
             </a>
@@ -429,43 +498,6 @@ export default function PortfolioV2() {
         <div className="about-heatmap reveal">
           <div className="section-eyebrow"><EyebrowIcon /> GitHub Activity</div>
           <GitHubHeatmap compact />
-        </div>
-      </section>
-
-      {/* Work — bento grid with flagship */}
-      <section className="section" id="work">
-        <div className="section-header reveal">
-          <div className="section-eyebrow"><EyebrowIcon /> Selected Work</div>
-          <h2 className="section-title">Projects</h2>
-        </div>
-        <Flagship />
-        <div className="bento-grid">
-          {projects.map((project, i) => (
-            <motion.a
-              key={project.id}
-              href={project.demo || project.code}
-              target="_blank"
-              rel="noopener"
-              className={`bento-card reveal ${i === 0 ? "bento-wide" : ""}`}
-              style={{ transitionDelay: `${0.05 * i}s` }}
-              whileHover={{ y: -5 }}
-              transition={{ type: "spring", stiffness: 250, damping: 18 }}
-            >
-              <div className="bc-top">
-                <span className="bc-type">{project.type}</span>
-                <span className="bc-year">{project.year}</span>
-              </div>
-              <h3 className="bc-title">{project.title}</h3>
-              <p className="bc-desc">{project.desc}</p>
-              <div className="card-tags">
-                {project.tags.map((t) => (<span className="tag" key={t}>{t}</span>))}
-              </div>
-              <div className="bc-links">
-                {project.demo && <span className="bc-link"><Link size={12} weight="Outline" /> Demo</span>}
-                <span className="bc-link"><IconGithub s={12} /> Code</span>
-              </div>
-            </motion.a>
-          ))}
         </div>
       </section>
 
@@ -576,6 +608,8 @@ export default function PortfolioV2() {
           <p>© {new Date().getFullYear()} HoutarouDes — designed & built with code, not templates.</p>
         </div>
       </footer>
+
+      </div>{/* /main-col */}
 
       <ScrollToTop />
     </>
