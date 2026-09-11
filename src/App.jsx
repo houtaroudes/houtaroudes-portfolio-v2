@@ -221,6 +221,10 @@ function Sidebar({ active, onNavigate, open, dark, onToggleTheme }) {
           </a>
         ))}
       </nav>
+      <div className="sidebar-copyright">
+        <p>© {new Date().getFullYear()} HoutarouDes</p>
+        <p>Built with code, not templates.</p>
+      </div>
     </aside>
   );
 }
@@ -602,8 +606,8 @@ export default function PortfolioV2() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer>
+      {/* Footer — mobile only; desktop shows copyright in the sidebar */}
+      <footer className="footer-mobile">
         <div className="footer-inner">
           <p>© {new Date().getFullYear()} HoutarouDes — designed & built with code, not templates.</p>
         </div>
