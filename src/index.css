@@ -210,6 +210,19 @@ h1,h2,h3,h4{font-family:var(--font-display);line-height:1.15;letter-spacing:-0.0
   letter-spacing:0.06em;text-transform:uppercase;color:var(--ink);
   box-shadow:0 14px 34px -14px rgba(11,30,63,0.35);
 }
+.wp-icon{
+  display:inline-flex;color:var(--ink);
+  animation:wp-pointer 2.2s var(--ease-out) infinite;
+}
+@keyframes wp-pointer{
+  0%,100%{transform:translate(0,0)}
+  30%{transform:translate(2px,2px)}
+  40%{transform:translate(1px,1px) scale(0.94)}
+  55%{transform:translate(0,0) scale(1)}
+}
+@media (prefers-reduced-motion:reduce){
+  .wp-icon{animation:none}
+}
 
 /* ===== Work panel — periwinkle bento ===== */
 .work-panel{

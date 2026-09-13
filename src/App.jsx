@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sun, Moon, ArrowUp, Envelope, Home, User, Briefcase, MessageCircle, Gamepad, Play, Camera, Coffee, Box, Code, Cpu } from "reicon-react";
+import { Sun, Moon, ArrowUp, Envelope, Home, User, Briefcase, MessageCircle, Gamepad, Play, Camera, Coffee, Box, Code, Cpu, Pointer } from "reicon-react";
 import TechStackModal from "./components/TechStackModal";
 import { TECH_STACK_PREVIEW, TOTAL_TECH_SKILLS } from "./data/techStack.js";
 
@@ -460,7 +460,7 @@ export default function PortfolioV2() {
             <h1 className="hero-display">Real apps, sites and builds you can open.</h1>
             <p className="hero-sub">Everything here shipped. Open a card to walk through the work at full size.</p>
           </motion.div>
-          <div className="work-pill" aria-hidden="true"><span>🖐 Click a card to open it</span></div>
+          <div className="work-pill" aria-hidden="true"><span><span className="wp-icon"><Pointer s={16} /></span> Click a card to open it</span></div>
           <WorkPanel />
         </div>
       </section>
