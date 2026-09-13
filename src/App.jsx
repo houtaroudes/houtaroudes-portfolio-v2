@@ -1,7 +1,9 @@
 import { lazy, Suspense, useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sun, Moon, ArrowUp, Envelope, Home, User, Briefcase, MessageCircle, Gamepad, Play, Camera, Coffee, Box, Code, Cpu, Pointer } from "reicon-react";
-import TechStackModal from "./components/TechStackModal";
+// Modal is code-split — most visitors never open it, so its code only
+// downloads on first open. It stays mounted afterwards so exit animations play.
+const TechStackModal = lazy(() => import("./components/TechStackModal"));
 // Decorative background — code-split so the shader stays out of the main bundle.
 const ContourBackground = lazy(() => import("./components/ContourBackground"));
 import { TECH_STACK_PREVIEW, TOTAL_TECH_SKILLS } from "./data/techStack.js";
@@ -237,6 +239,7 @@ function WorkIcon({ icon: Icon, size = 20 }) {
 
 function WorkPanel() {
   const [techStackOpen, setTechStackOpen] = useState(false);
+  const [modalMounted, setModalMounted] = useState(false);
 
   return (
     <>
@@ -312,7 +315,7 @@ function WorkPanel() {
       <button
         type="button"
         className="wcard wcard-wide"
-        onClick={() => setTechStackOpen(true)}
+        onClick={() => { setModalMounted(true); setTechStackOpen(true); }}
         aria-haspopup="dialog"
         aria-label="Open my tech stack and skills"
       >
@@ -326,7 +329,11 @@ function WorkPanel() {
       </button>
     </div>
 
-    <TechStackModal open={techStackOpen} onClose={() => setTechStackOpen(false)} />
+    {modalMounted && (
+      <Suspense fallback={null}>
+        <TechStackModal open={techStackOpen} onClose={() => setTechStackOpen(false)} />
+      </Suspense>
+    )}
     </>
   );
 }
