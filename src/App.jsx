@@ -414,6 +414,13 @@ export default function PortfolioV2() {
 
   return (
     <>
+      {/* Animated background orbs */}
+      <div className="bg-orbs" aria-hidden="true">
+        <span className="orb-1" />
+        <span className="orb-2" />
+        <span className="orb-3" />
+      </div>
+
       {/* Mobile top bar */}
       <header className={`mobile-bar ${sidebarOpen ? "open" : ""}`}>
         <a href="#home" className="logo" onClick={handleNavClick}>

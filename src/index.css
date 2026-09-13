@@ -625,3 +625,56 @@ button.wcard:hover{transform:translateY(-4px);box-shadow:0 24px 54px -20px rgba(
   .mobile-bar.open .nav-burger span:nth-child(2){opacity:0}
   .mobile-bar.open .nav-burger span:nth-child(3){transform:translateY(-5.6px) rotate(-45deg)}
 }
+
+/* ===== Animated background orbs ===== */
+.bg-orbs{
+  position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none;
+}
+.bg-orbs span{
+  position:absolute;border-radius:50%;filter:blur(80px);will-change:transform;
+}
+.bg-orbs .orb-1{
+  width:44vw;height:44vw;min-width:420px;min-height:420px;top:-12%;left:-8%;
+  background:radial-gradient(circle,rgba(242,107,29,0.16),transparent 70%);
+  animation:orb-drift-1 26s ease-in-out infinite;
+}
+.bg-orbs .orb-2{
+  width:52vw;height:52vw;min-width:480px;min-height:480px;top:30%;right:-14%;
+  background:radial-gradient(circle,rgba(185,199,236,0.4),transparent 70%);
+  animation:orb-drift-2 34s ease-in-out infinite;
+}
+.bg-orbs .orb-3{
+  width:38vw;height:38vw;min-width:360px;min-height:360px;bottom:-16%;left:22%;
+  background:radial-gradient(circle,rgba(242,107,29,0.08),transparent 70%);
+  animation:orb-drift-3 42s ease-in-out infinite;
+}
+@keyframes orb-drift-1{
+  0%,100%{transform:translate(0,0) scale(1)}
+  50%{transform:translate(9vw,7vh) scale(1.12)}
+}
+@keyframes orb-drift-2{
+  0%,100%{transform:translate(0,0) scale(1)}
+  50%{transform:translate(-8vw,-6vh) scale(0.92)}
+}
+@keyframes orb-drift-3{
+  0%,100%{transform:translate(0,0) scale(1)}
+  50%{transform:translate(6vw,-8vh) scale(1.08)}
+}
+[data-theme="dark"] .bg-orbs .orb-1{
+  background:radial-gradient(circle,rgba(242,107,29,0.12),transparent 70%);
+}
+[data-theme="dark"] .bg-orbs .orb-2{
+  background:radial-gradient(circle,rgba(102,126,234,0.14),transparent 70%);
+}
+[data-theme="dark"] .bg-orbs .orb-3{
+  background:radial-gradient(circle,rgba(242,107,29,0.07),transparent 70%);
+}
+@media (prefers-reduced-motion:reduce){
+  .bg-orbs span{animation:none}
+}
+@media (max-width:768px){
+  .bg-orbs span{filter:blur(60px)}
+  .bg-orbs .orb-1{width:70vw;height:70vw}
+  .bg-orbs .orb-2{width:80vw;height:80vw}
+  .bg-orbs .orb-3{width:60vw;height:60vw}
+}
