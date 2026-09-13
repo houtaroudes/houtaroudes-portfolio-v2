@@ -1,8 +1,9 @@
-import { useEffect, useState, useRef } from "react";
+import { lazy, Suspense, useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sun, Moon, ArrowUp, Envelope, Home, User, Briefcase, MessageCircle, Gamepad, Play, Camera, Coffee, Box, Code, Cpu, Pointer } from "reicon-react";
 import TechStackModal from "./components/TechStackModal";
-import ContourBackground from "./components/ContourBackground";
+// Decorative background — code-split so the shader stays out of the main bundle.
+const ContourBackground = lazy(() => import("./components/ContourBackground"));
 import { TECH_STACK_PREVIEW, TOTAL_TECH_SKILLS } from "./data/techStack.js";
 
 const IconGithub = ({ s = 16 }) => (
@@ -416,7 +417,9 @@ export default function PortfolioV2() {
   return (
     <>
       {/* Animated background */}
-      <ContourBackground />
+      <Suspense fallback={null}>
+        <ContourBackground />
+      </Suspense>
 
       {/* Mobile top bar */}
       <header className={`mobile-bar ${sidebarOpen ? "open" : ""}`}>
