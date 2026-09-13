@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sun, Moon, ArrowUp, Envelope, Home, User, Briefcase, MessageCircle, Gamepad, Play, Camera, Coffee, Box, Code, Cpu, Pointer } from "reicon-react";
 import TechStackModal from "./components/TechStackModal";
+import ContourBackground from "./components/ContourBackground";
 import { TECH_STACK_PREVIEW, TOTAL_TECH_SKILLS } from "./data/techStack.js";
 
 const IconGithub = ({ s = 16 }) => (
@@ -414,12 +415,8 @@ export default function PortfolioV2() {
 
   return (
     <>
-      {/* Animated background orbs */}
-      <div className="bg-orbs" aria-hidden="true">
-        <span className="orb-1" />
-        <span className="orb-2" />
-        <span className="orb-3" />
-      </div>
+      {/* Animated background */}
+      <ContourBackground />
 
       {/* Mobile top bar */}
       <header className={`mobile-bar ${sidebarOpen ? "open" : ""}`}>
