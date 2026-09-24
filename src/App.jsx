@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sun, Moon, ArrowUp, Envelope, Home, User, Briefcase, MessageCircle, Gamepad, Play, Camera, Coffee, Box, Code, Cpu, Pointer } from "reicon-react";
+import { Sun, Moon, ArrowUp, Envelope, Home, User, Briefcase, MessageCircle, Gamepad, Play, Camera, Coffee, Box, Code, Cpu, Pointer, Calendar } from "reicon-react";
 // Modal is code-split — most visitors never open it, so its code only
 // downloads on first open (or earlier, on card hover). It stays mounted
 // afterwards so exit animations play.
@@ -44,6 +44,7 @@ const projects = [
   { id: 3, title: "Houtarou Cafe", desc: "A concept cafe site with minimalist design — ordering flow and reservation system.", tags: ["HTML", "CSS", "JS"], code: "https://github.com/houtaroudes/houtarou-cafe", type: "Frontend", year: "2026", Icon: Coffee },
   { id: 4, title: "Learning WebDev Hub", desc: "My gamified learning hub — 26+ quests, live previews, and code challenges. Learn by doing!", tags: ["React", "Vite", "HTML", "CSS"], demo: "https://random-learning-webdev-site.vercel.app", code: "https://github.com/houtaroudes/random-learning-webdev-site", type: "Interactive Learning", year: "2026", shot: "/images/shot-learning.png", Icon: Gamepad },
   { id: 5, title: "Modern Filipino Homes", desc: "A secure proptech platform — property showcase, financing calculator, AI chat assistant, and secure lead capture, all shipped live.", tags: ["React", "Vite", "tRPC", "MySQL", "Tailwind"], demo: "https://modern-fil-homes.vercel.app", code: "https://github.com/houtaroudes/modern-fil-homes", type: "Full Stack Platform", year: "2026", shot: "/images/shot-mfh.png", Icon: Home },
+  { id: 6, title: "MediQueue", desc: "Campus clinic appointment booking + walk-in queueing — live NOW SERVING board, role-based dashboards for students, staff, and admin, and a 38-check smoke test.", tags: ["PHP", "MySQL", "JS", "CSS"], code: "https://github.com/houtaroudes/mediqueue", type: "Full Stack", year: "2026", Icon: Calendar },
 ];
 
 const byId = (id) => projects.find((p) => p.id === id);
