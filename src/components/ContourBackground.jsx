@@ -171,12 +171,12 @@ export default function ContourBackground() {
     window.addEventListener("pointermove", onPointer);
 
     // Theme: ease uDark toward the current data-theme value.
-    let dark = 0;
     let darkTarget = 0;
     const readTheme = () => {
       darkTarget = document.documentElement.getAttribute("data-theme") === "dark" ? 1 : 0;
     };
     readTheme();
+    let dark = darkTarget; // start on the visitor's actual theme — no light flash for dark mode
     const themeObserver = new MutationObserver(readTheme);
     themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
 
@@ -200,14 +200,16 @@ export default function ContourBackground() {
       raf = requestAnimationFrame(loop);
     };
 
+    const onVisibility = () => {
+      running = !document.hidden;
+    };
+
     if (reducedMotion) {
       draw(0); // one static frame — the pattern still shows, nothing animates
     } else {
       raf = requestAnimationFrame(loop);
       // Save battery: stop drawing while the tab is hidden.
-      document.addEventListener("visibilitychange", () => {
-        running = !document.hidden;
-      });
+      document.addEventListener("visibilitychange", onVisibility);
     }
 
     return () => {
@@ -215,6 +217,7 @@ export default function ContourBackground() {
       themeObserver.disconnect();
       window.removeEventListener("resize", resize);
       window.removeEventListener("pointermove", onPointer);
+      document.removeEventListener("visibilitychange", onVisibility);
     };
   }, []);
 
