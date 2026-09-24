@@ -164,14 +164,14 @@ function ProfilePicture() {
         firstContent={
           <img
             src="/images/pfp-default.jpg"
-            alt="HoutarouDes"
+            alt="Bryan Sacueza"
             style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "22px" }}
           />
         }
         secondContent={
           <img
             src="/images/pfp-hover.jpg"
-            alt="HoutarouDes"
+            alt="Bryan Sacueza"
             style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "22px" }}
           />
         }
@@ -195,7 +195,7 @@ function Sidebar({ active, onNavigate, open, dark, onToggleTheme }) {
       </a>
       <div className="sidebar-identity">
         <h2 className="sidebar-name">
-          HoutarouDes
+          Bryan Sacueza
           <svg className="sidebar-verified" width="16" height="16" viewBox="0 0 24 24" fill="#4f8ff7" aria-label="Verified">
             <path d="M12 1.5l2.6 2 3.2-.4 1.2 3 2.9 1.5-.8 3.2.8 3.2-2.9 1.5-1.2 3-3.2-.4-2.6 2-2.6-2-3.2.4-1.2-3L3.1 14l.8-3.2-.8-3.2L6 6.1l1.2-3 3.2.4z" />
             <path d="M10.6 15.9l-3.3-3.3 1.3-1.3 2 2 4.8-4.8 1.3 1.3z" fill="#fff" stroke="none" />
@@ -228,7 +228,7 @@ function Sidebar({ active, onNavigate, open, dark, onToggleTheme }) {
         ))}
       </nav>
       <div className="sidebar-copyright">
-        <p>© {new Date().getFullYear()} HoutarouDes</p>
+        <p>© {new Date().getFullYear()} Bryan Sacueza</p>
         <p>Built with code, not templates.</p>
       </div>
     </aside>
@@ -435,8 +435,8 @@ export default function PortfolioV2() {
       {/* Mobile top bar */}
       <header className={`mobile-bar ${sidebarOpen ? "open" : ""}`}>
         <a href="#home" className="logo" onClick={handleNavClick}>
-          <span>Houtarou</span>
-          <span className="logo-accent">Des</span>
+          <span>Bryan</span>{" "}
+          <span className="logo-accent">Sacueza</span>
         </a>
         <button
           className="nav-burger"
@@ -627,7 +627,7 @@ export default function PortfolioV2() {
       {/* Footer — mobile only; desktop shows copyright in the sidebar */}
       <footer className="footer-mobile">
         <div className="footer-inner">
-          <p>© {new Date().getFullYear()} HoutarouDes — designed & built with code, not templates.</p>
+          <p>© {new Date().getFullYear()} Bryan Sacueza — designed & built with code, not templates.</p>
         </div>
       </footer>
 
