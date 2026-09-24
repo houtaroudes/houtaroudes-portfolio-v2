@@ -6,9 +6,9 @@
     }
   </style>
   <rect class="bg" width="64" height="64" rx="14"/>
-  <g fill="none" stroke-linecap="round" stroke-width="7">
-    <path d="M23 19v26" stroke="#E9EDF5"/>
-    <path d="M23 32h18" stroke="#E9EDF5"/>
-    <path d="M41 19v26" stroke="#F26B1D"/>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="7">
+    <path d="M24 19v26" stroke="#E9EDF5"/>
+    <path d="M24 19h12a6.5 6.5 0 0 1 0 13H24" stroke="#F26B1D"/>
+    <path d="M24 32h13.5a7 7 0 0 1 0 14H24" stroke="#F26B1D"/>
   </g>
 </svg>
