@@ -1,14 +1,10 @@
 import { lazy, Suspense, useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sun, Moon, ArrowUp, Envelope, Home, User, Briefcase, MessageCircle, Gamepad, Play, Camera, Coffee, Box, Code, Cpu, Pointer, Calendar } from "reicon-react";
-// Modal is code-split — most visitors never open it, so its code only
-// downloads on first open (or earlier, on card hover). It stays mounted
-// afterwards so exit animations play.
-const loadTechStackModal = () => import("./components/TechStackModal");
-const TechStackModal = lazy(loadTechStackModal);
+import { Sun, Moon, ArrowUp, Envelope, Home, User, Briefcase, MessageCircle, Gamepad } from "reicon-react";
 // Decorative background — code-split so the shader stays out of the main bundle.
 const ContourBackground = lazy(() => import("./components/ContourBackground"));
-import { TECH_STACK_PREVIEW, TOTAL_TECH_SKILLS } from "./data/techStack.js";
+import ProjectsGrid from "./components/ProjectsGrid";
+import TechStack from "./components/TechStack";
 
 const IconGithub = ({ s = 16 }) => (
   <svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -20,43 +16,11 @@ const EyebrowIcon = () => (
     <path d="M4 0L8 4L4 8L0 4Z"/>
   </svg>
 );
-const GlobeIcon = () => (
-  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="12" cy="12" r="10" />
-    <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-  </svg>
-);
-const ExtIcon = () => (
-  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-    <polyline points="15 3 21 3 21 9" />
-    <line x1="10" y1="14" x2="21" y2="3" />
-  </svg>
-);
 import PixelTransition from "./components/PixelTransition";
 import GitHubHeatmap from "./components/GitHubHeatmap";
 import "./components/PixelTransition.css";
 
 /* ===== Data ===== */
-const projects = [
-  { id: 1, title: "Motion Website", desc: "A front-end inspiration hub for exploring layout and animation ideas.", tags: ["HTML", "CSS", "JS"], demo: "https://motion-website-des.vercel.app", code: "https://github.com/houtaroudes/motion-website", type: "Frontend", year: "2025", shot: "/images/shot-motion.png", Icon: Play },
-  { id: 2, title: "PixelPodWeb", desc: "A photobooth web app with PHP + MySQL backend — built solo as a school project.", tags: ["PHP", "MySQL", "CSS", "JS"], demo: "https://pixelpodweb.vercel.app", code: "https://github.com/houtaroudes/PixelPodWeb", type: "Full Stack", year: "2025", Icon: Camera },
-  { id: 3, title: "Houtarou Cafe", desc: "A concept cafe site with minimalist design — ordering flow and reservation system.", tags: ["HTML", "CSS", "JS"], code: "https://github.com/houtaroudes/houtarou-cafe", type: "Frontend", year: "2026", Icon: Coffee },
-  { id: 4, title: "Learning WebDev Hub", desc: "My gamified learning hub — 26+ quests, live previews, and code challenges. Learn by doing!", tags: ["React", "Vite", "HTML", "CSS"], demo: "https://random-learning-webdev-site.vercel.app", code: "https://github.com/houtaroudes/random-learning-webdev-site", type: "Interactive Learning", year: "2026", shot: "/images/shot-learning.png", Icon: Gamepad },
-  { id: 5, title: "Modern Filipino Homes", desc: "A secure proptech platform — property showcase, financing calculator, AI chat assistant, and secure lead capture, all shipped live.", tags: ["React", "Vite", "tRPC", "MySQL", "Tailwind"], demo: "https://modern-fil-homes.vercel.app", code: "https://github.com/houtaroudes/modern-fil-homes", type: "Full Stack Platform", year: "2026", shot: "/images/shot-mfh.png", Icon: Home },
-  { id: 6, title: "MediQueue", desc: "Campus clinic appointment booking + walk-in queueing — live NOW SERVING board, role-based dashboards for students, staff, and admin, and a 38-check smoke test.", tags: ["PHP", "MySQL", "JS", "CSS"], code: "https://github.com/houtaroudes/mediqueue", type: "Full Stack", year: "2026", Icon: Calendar },
-];
-
-const byId = (id) => projects.find((p) => p.id === id);
-
-const highlight = byId(4); // Learning WebDev Hub — the highlight build
-
-const flagship = {
-  tags: ["React", "Vite", "tRPC", "MySQL", "Tailwind"],
-  demo: "https://modern-fil-homes.vercel.app",
-  code: "https://github.com/houtaroudes/modern-fil-homes",
-};
-
 const services = [
   { title: "Full-Stack Web Apps", desc: "React front-ends with real backends — APIs, databases, auth. From idea to deployed product." },
   { title: "Landing Pages", desc: "Fast, animated, pixel-perfect marketing pages that load quickly and convert visitors." },
@@ -207,7 +171,7 @@ function Sidebar({ active, onNavigate, open, dark, onToggleTheme }) {
       <div className="sidebar-socials">
         {SIDEBAR_SOCIALS.map((s) => (
           <a key={s.label} href={s.href} target="_blank" rel="noopener" className="sidebar-social" title={s.label} aria-label={s.label}>
-            {s.label === "GitHub" ? <IconGithub s={16} /> : s.label === "LinkedIn" ? <span className="sidebar-social-glyph">in</span> : <GlobeIcon />}
+            {s.label === "GitHub" ? <IconGithub s={16} /> : s.label === "LinkedIn" ? <span className="sidebar-social-glyph">in</span> : <Gamepad size={16} weight="Outline" />}
           </a>
         ))}
         <button
@@ -233,113 +197,6 @@ function Sidebar({ active, onNavigate, open, dark, onToggleTheme }) {
         <p>Built with code, not templates.</p>
       </div>
     </aside>
-  );
-}
-
-function WorkIcon({ icon: Icon, size = 20 }) {
-  return <Icon size={size} weight="Outline" style={{ color: "var(--orange)" }} />;
-}
-
-function WorkPanel() {
-  const [techStackOpen, setTechStackOpen] = useState(false);
-  const [modalMounted, setModalMounted] = useState(false);
-
-  return (
-    <>
-    <div className="work-panel reveal">
-      {/* Big card — Learning WebDev Hub highlight with real screenshot */}
-      <a className="wcard wcard-big" href={highlight.demo} target="_blank" rel="noopener">
-        <div className="wc-left">
-          <span className="wc-icon"><WorkIcon icon={highlight.Icon} /></span>
-          <h3 className="wc-title">Learning WebDev Hub</h3>
-          <p className="wc-desc">{highlight.desc}</p>
-          <div className="card-tags">
-            {highlight.tags.map((t) => (<span className="tag" key={t}>{t}</span>))}
-          </div>
-        </div>
-        <div className="wc-shot">
-          <img src={highlight.shot} alt="Learning WebDev Hub — Random Learning WebDev" loading="lazy" />
-        </div>
-      </a>
-
-      {/* Mid card — Motion Website with real screenshot */}
-      <a className="wcard wcard-mid" href={byId(1).demo} target="_blank" rel="noopener">
-        <span className="wc-icon"><WorkIcon icon={byId(1).Icon} /></span>
-        <h3 className="wc-title">Motion Website</h3>
-        <p className="wc-desc">{byId(1).desc}</p>
-        <div className="wc-shot">
-          <img src={byId(1).shot} alt="Motion Website — Where Motion Meets Design" loading="lazy" />
-        </div>
-      </a>
-
-      {/* Mini cards column */}
-      <div className="wcard-minis">
-        {[byId(2), byId(3)].map((project) => (
-          <a key={project.id} className="wcard wcard-mini" href={project.demo || project.code} target="_blank" rel="noopener">
-            <span className="wc-icon sm"><WorkIcon icon={project.Icon} size={17} /></span>
-            <div className="wcm-body">
-              <div className="wc-eyebrow">{project.type}</div>
-              <div className="wcm-title">{project.title} <ExtIcon /></div>
-              <p className="wc-desc">{project.desc}</p>
-            </div>
-          </a>
-        ))}
-        <a className="wcard wcard-mini" href="https://github.com/houtaroudes?tab=repositories" target="_blank" rel="noopener">
-          <span className="wc-icon sm"><WorkIcon icon={Code} size={17} /></span>
-          <div className="wcm-body">
-            <div className="wc-eyebrow">More Builds</div>
-            <div className="wcm-title">All Repositories <ExtIcon /></div>
-            <p className="wc-desc">Experiments, school projects, and everything else on GitHub.</p>
-          </div>
-        </a>
-      </div>
-
-      {/* Row 2 */}
-      <a className="wcard wcard-sites" href={byId(5).demo} target="_blank" rel="noopener">
-        <span className="wc-icon"><WorkIcon icon={byId(5).Icon} /></span>
-        <h3 className="wc-title">Modern Filipino Homes</h3>
-        <p className="wc-desc">A secure proptech platform — financing calculator, AI assistant, lead capture.</p>
-        <div className="wc-shot">
-          <img src={byId(5).shot} alt="Modern Filipino Homes — Minimalist Homes, Designed for the Modern Filipino" loading="lazy" />
-        </div>
-      </a>
-
-      <div className="wcard wcard-apps">
-        <span className="wc-icon"><WorkIcon icon={Box} /></span>
-        <h3 className="wc-title">Tools and Experiments</h3>
-        <p className="wc-desc">Real builds wired to real data — open one.</p>
-        <div className="app-pills">
-          <a className="app-pill" href={byId(2).demo} target="_blank" rel="noopener"><WorkIcon icon={byId(2).Icon} size={15} /> PixelPodWeb <i className="dot" /></a>
-          <a className="app-pill" href={byId(3).code} target="_blank" rel="noopener"><WorkIcon icon={byId(3).Icon} size={15} /> Houtarou Cafe</a>
-          <a className="app-pill" href={flagship.code} target="_blank" rel="noopener"><WorkIcon icon={Code} size={15} /> Platform Source</a>
-        </div>
-      </div>
-
-      <button
-        type="button"
-        className="wcard wcard-wide"
-        onClick={() => { setModalMounted(true); setTechStackOpen(true); }}
-        onMouseEnter={loadTechStackModal}
-        onFocus={loadTechStackModal}
-        aria-haspopup="dialog"
-        aria-label="Open my tech stack and skills"
-      >
-        <span className="wc-icon"><WorkIcon icon={Cpu} /></span>
-        <h3 className="wc-title">My Tech Stack</h3>
-        <p className="wc-desc">The languages, frameworks, and tools behind every build — tap to open the full stack.</p>
-        <div className="card-tags">
-          {TECH_STACK_PREVIEW.map((t) => (<span className="tag" key={t}>{t}</span>))}
-          <span className="tag tag-more">+{TOTAL_TECH_SKILLS - TECH_STACK_PREVIEW.length} more</span>
-        </div>
-      </button>
-    </div>
-
-    {modalMounted && (
-      <Suspense fallback={null}>
-        <TechStackModal open={techStackOpen} onClose={() => setTechStackOpen(false)} />
-      </Suspense>
-    )}
-    </>
   );
 }
 
@@ -475,14 +332,14 @@ export default function PortfolioV2() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="hero-eyebrow">Projects</div>
-            <h1 className="hero-display">Real apps, sites and builds you can open.</h1>
-            <p className="hero-sub">Everything here shipped. Open a card to walk through the work at full size.</p>
+            <ProjectsGrid />
           </motion.div>
-          <div className="work-pill" aria-hidden="true"><span><span className="wp-icon"><Pointer s={16} /></span> Click a card to open it</span></div>
-          <WorkPanel />
         </div>
       </section>
+
+      {/* Tech Stack — the card that opens the full breakdown. The Daily
+          Drivers strip now lives inside the Projects head above. */}
+      <TechStack />
 
       {/* About */}
       <section className="section about-section" id="about">

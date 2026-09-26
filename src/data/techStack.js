@@ -10,7 +10,7 @@ export const TECH_GROUPS = [
   },
   {
     name: "Tools & Platforms",
-    skills: ["Git", "GitHub", "Vercel", "C#", ".NET", "Python", "PowerShell"],
+    skills: ["VS Code", "Git", "GitHub", "Vercel", "C#", ".NET", "Python", "PowerShell"],
   },
   {
     name: "Creative & More",
