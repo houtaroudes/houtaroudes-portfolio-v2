@@ -2,7 +2,7 @@ import { Suspense, lazy, useState } from "react";
 import { ArrowUpRight, Cpu } from "reicon-react";
 import { TECH_STACK_PREVIEW, TOTAL_TECH_SKILLS } from "../data/techStack.js";
 
-/* The modal is code-split — most visitors never open it, so its code only
+/* The modal is code-split - most visitors never open it, so its code only
    downloads on first open (or earlier, on hover / focus). It stays mounted
    afterwards so the exit animation can play. */
 const loadTechStackModal = () => import("./TechStackModal");
@@ -56,7 +56,7 @@ export default function TechStack() {
         <span className="dd-stack-body">
           <span className="dd-stack-title">{TOTAL_TECH_SKILLS} tools &amp; technologies</span>
           <span className="dd-stack-desc">
-            Open the full breakdown — languages, frameworks, databases and creative software.
+            Open the full breakdown - languages, frameworks, databases and creative software.
           </span>
           <span className="card-tags">
             {TECH_STACK_PREVIEW.map((t) => (

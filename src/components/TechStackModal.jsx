@@ -105,7 +105,7 @@ export default function TechStackModal({ open, onClose }) {
             </motion.div>
 
             <div className="ts-footer">
-              <span>{TOTAL_TECH_SKILLS} tools &amp; technologies — and always learning more.</span>
+              <span>{TOTAL_TECH_SKILLS} tools &amp; technologies - and always learning more.</span>
               <a href="https://github.com/houtaroudes" target="_blank" rel="noopener noreferrer">
                 github.com/houtaroudes →
               </a>

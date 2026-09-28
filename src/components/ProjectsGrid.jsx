@@ -7,8 +7,9 @@ import DailyDrivers from "./DailyDrivers";
    Each card is an <a> straight to the live build (or its source when there
    is nothing deployed), so nothing here needs a second click.
 
-   Random Web Dev is the flagship: it spans two columns and carries a real
-   screenshot, the way the template's wide cards carry their media.
+   Random Web Dev is the flagship and St. Joseph Village is the second
+   highlight: both span the full row and carry a real screenshot, the way
+   the template's wide cards carry their media.
 */
 const PROJECTS = [
   {
@@ -16,12 +17,24 @@ const PROJECTS = [
     flag: true,
     kicker: "Flagship build",
     title: "Random Web Dev",
-    desc: "My gamified learning hub — 26+ quests, live previews and code challenges. Learn by doing, not by watching.",
+    desc: "My gamified learning hub with 26+ quests, live previews and code challenges. Learn by doing, not by watching.",
     tags: ["React", "Vite", "HTML", "CSS"],
     logos: ["/icons/react.svg", "/icons/vite.svg", "/icons/javascript.svg"],
     demo: "https://random-learning-webdev-site.vercel.app",
     code: "https://github.com/houtaroudes/random-learning-webdev-site",
     shot: "/images/shot-learning.png",
+  },
+  {
+    id: "st-joseph-village",
+    flag: true,
+    kicker: "Cinematic build",
+    title: "St. Joseph Village",
+    desc: "A cinematic concept landing page: a generated 3D village you fly through on scroll, an interactive 68-lot site plan and a live financing calculator.",
+    tags: ["React", "Vite", "Three.js", "Framer Motion"],
+    logos: ["/icons/react.svg", "/icons/vite.svg", "/icons/threedotjs.svg"],
+    demo: "https://st-joseph-village.vercel.app",
+    code: "https://github.com/houtaroudes/st-joseph-village",
+    shot: "/images/shot-stjoseph.png",
   },
   {
     id: "motion",
@@ -37,7 +50,7 @@ const PROJECTS = [
     id: "pixelpod",
     kicker: "Full Stack",
     title: "PixelPodWeb",
-    desc: "A photobooth web app with a PHP + MySQL backend — built solo as a school project.",
+    desc: "A photobooth web app with a PHP + MySQL backend, built solo as a school project.",
     tags: ["PHP", "MySQL", "CSS", "JS"],
     logos: ["/icons/php.svg", "/icons/mysql.svg", "/icons/javascript.svg"],
     demo: "https://pixelpodweb.vercel.app",
@@ -47,7 +60,7 @@ const PROJECTS = [
     id: "cafe",
     kicker: "Frontend",
     title: "Houtarou Cafe",
-    desc: "A concept cafe site with minimalist design — ordering flow and a reservation system.",
+    desc: "A concept cafe site with minimalist design: ordering flow and a reservation system.",
     tags: ["HTML", "CSS", "JS"],
     logos: ["/icons/html5.svg", "/icons/css3.svg", "/icons/javascript.svg"],
     code: "https://github.com/houtaroudes/houtarou-cafe",
@@ -56,7 +69,7 @@ const PROJECTS = [
     id: "mfh",
     kicker: "Full Stack Platform",
     title: "Modern Filipino Homes",
-    desc: "A secure proptech platform — property showcase, financing calculator, AI assistant and lead capture, all shipped live.",
+    desc: "A secure proptech platform: property showcase, financing calculator, AI assistant and lead capture, all shipped live.",
     tags: ["React", "Vite", "tRPC", "MySQL", "Tailwind"],
     logos: ["/icons/react.svg", "/icons/vite.svg", "/icons/tailwindcss.svg", "/icons/mysql.svg"],
     demo: "https://modern-fil-homes.vercel.app",

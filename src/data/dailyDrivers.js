@@ -1,4 +1,4 @@
-/* ===== Daily Drivers — the tools I reach for every single session =====
+/* ===== Daily Drivers - the tools I reach for every single session =====
    `color` present  -> the file is a single-color glyph, so it is tinted
                        through a CSS mask using that brand colour.
    `color` absent   -> the file is a multi-colour brand mark, rendered as

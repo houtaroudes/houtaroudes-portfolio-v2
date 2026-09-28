@@ -1,7 +1,7 @@
 import { lazy, Suspense, useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sun, Moon, ArrowUp, Envelope, Home, User, Briefcase, MessageCircle, Gamepad } from "reicon-react";
-// Decorative background — code-split so the shader stays out of the main bundle.
+// Decorative background - code-split so the shader stays out of the main bundle.
 const ContourBackground = lazy(() => import("./components/ContourBackground"));
 import ProjectsGrid from "./components/ProjectsGrid";
 import TechStack from "./components/TechStack";
@@ -22,22 +22,22 @@ import "./components/PixelTransition.css";
 
 /* ===== Data ===== */
 const services = [
-  { title: "Full-Stack Web Apps", desc: "React front-ends with real backends — APIs, databases, auth. From idea to deployed product." },
+  { title: "Full-Stack Web Apps", desc: "React front-ends with real backends: APIs, databases, auth. From idea to deployed product." },
   { title: "Landing Pages", desc: "Fast, animated, pixel-perfect marketing pages that load quickly and convert visitors." },
-  { title: "School & Project Help", desc: "Clean, well-documented code for capstones and school projects — built to actually work." },
+  { title: "School & Project Help", desc: "Clean, well-documented code for capstones and school projects, built to actually work." },
 ];
 
 const method = [
-  { step: "01", title: "Discover", desc: "We talk about what you need — goals, features, timeline. No jargon, just clarity." },
+  { step: "01", title: "Discover", desc: "We talk about what you need: goals, features, timeline. No jargon, just clarity." },
   { step: "02", title: "Build", desc: "I ship working software in small increments so you see progress every step of the way." },
   { step: "03", title: "Launch & Support", desc: "We deploy it live, then I stick around for fixes, tweaks, and improvements." },
 ];
 
 const faqs = [
-  { q: "What can you build?", a: "Full-stack web apps, landing pages, and school projects — React front-ends, PHP or Node backends, MySQL databases, all deployed live." },
+  { q: "What can you build?", a: "Full-stack web apps, landing pages, and school projects: React front-ends, PHP or Node backends, MySQL databases, all deployed live." },
   { q: "How much does a project cost?", a: "It depends on scope. Student and school projects are budget-friendly; bigger apps are quoted after we talk about what you need." },
   { q: "How long does it take?", a: "A landing page can take days; a full app takes weeks. I work in increments so you see real progress early." },
-  { q: "Can you maintain my existing project?", a: "Yes — fixes, new features, or deployment help on existing codebases are all fine." },
+  { q: "Can you maintain my existing project?", a: "Yes. Fixes, new features, or deployment help on existing codebases are all fine." },
 ];
 
 const NAV_ITEMS = [
@@ -260,7 +260,7 @@ function ScrollToTop() {
   );
 }
 
-/* ===== Main Portfolio — BrewedOps-style rebuild ===== */
+/* ===== Main Portfolio - BrewedOps-style rebuild ===== */
 export default function PortfolioV2() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [formSent, setFormSent] = useState(false);
@@ -280,7 +280,7 @@ export default function PortfolioV2() {
 
   const handleNavClick = () => setSidebarOpen(false);
 
-  const { count: projectCount, ref: projectRef } = useCountUp(6);
+  const { count: projectCount, ref: projectRef } = useCountUp(7);
   const { count: skillCount, ref: skillRef } = useCountUp(10);
 
   return (
@@ -320,7 +320,7 @@ export default function PortfolioV2() {
       {/* Main column (right of sidebar) */}
       <div className="main-col">
 
-      {/* Home — Projects showcase (BrewedOps style) */}
+      {/* Home - Projects showcase (BrewedOps style) */}
       <section className="hero" id="home">
         <svg className="hero-doodles" aria-hidden="true" preserveAspectRatio="none" viewBox="0 0 1200 800">
           <path d="M-80 620 C 260 300, 620 760, 1280 320" />
@@ -337,7 +337,7 @@ export default function PortfolioV2() {
         </div>
       </section>
 
-      {/* Tech Stack — the card that opens the full breakdown. The Daily
+      {/* Tech Stack - the card that opens the full breakdown. The Daily
           Drivers strip now lives inside the Projects head above. */}
       <TechStack />
 
@@ -348,7 +348,7 @@ export default function PortfolioV2() {
             <div className="section-eyebrow reveal"><EyebrowIcon /> About Me</div>
             <h2 className="section-title reveal reveal-delay-1">Code, coffee, and curiosity.</h2>
             <p className="about-lede reveal reveal-delay-2">
-              I'm a college student from the Philippines who fell in love with web development —
+              I'm a college student from the Philippines who fell in love with web development,
               turning ideas into interactive experiences, one commit at a time.
             </p>
             <p className="about-text reveal reveal-delay-2">
@@ -482,10 +482,10 @@ export default function PortfolioV2() {
         </div>
       </section>
 
-      {/* Footer — mobile only; desktop shows copyright in the sidebar */}
+      {/* Footer - mobile only; desktop shows copyright in the sidebar */}
       <footer className="footer-mobile">
         <div className="footer-inner">
-          <p>© {new Date().getFullYear()} Bryan Sacueza — designed & built with code, not templates.</p>
+          <p>© {new Date().getFullYear()} Bryan Sacueza - designed & built with code, not templates.</p>
         </div>
       </footer>
 

@@ -176,7 +176,7 @@ export default function ContourBackground() {
       darkTarget = document.documentElement.getAttribute("data-theme") === "dark" ? 1 : 0;
     };
     readTheme();
-    let dark = darkTarget; // start on the visitor's actual theme — no light flash for dark mode
+    let dark = darkTarget; // start on the visitor's actual theme - no light flash for dark mode
     const themeObserver = new MutationObserver(readTheme);
     themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
 
@@ -205,7 +205,7 @@ export default function ContourBackground() {
     };
 
     if (reducedMotion) {
-      draw(0); // one static frame — the pattern still shows, nothing animates
+      draw(0); // one static frame - the pattern still shows, nothing animates
     } else {
       raf = requestAnimationFrame(loop);
       // Save battery: stop drawing while the tab is hidden.
