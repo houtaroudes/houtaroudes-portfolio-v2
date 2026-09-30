@@ -23,7 +23,7 @@ const PROJECTS = [
     tags: ["React", "Vite", "HTML", "CSS"],
     logos: ["/icons/react.svg", "/icons/vite.svg", "/icons/javascript.svg"],
     demo: "https://random-learning-webdev-site.vercel.app",
-    code: "https://github.com/houtaroudes/random-learning-webdev-site",
+    code: "https://github.com/houtaroudes/Random-Learning-WebDev",
     shot: "/images/shot-learning.png",
     story: {
       problem: "Learning resources are passive: videos and docs you watch but never touch. It is hard to tell whether you can actually build anything.",
@@ -84,7 +84,6 @@ const PROJECTS = [
     tags: ["React", "Vite", "tRPC", "MySQL", "Tailwind"],
     logos: ["/icons/react.svg", "/icons/vite.svg", "/icons/tailwindcss.svg", "/icons/mysql.svg"],
     demo: "https://modern-fil-homes.vercel.app",
-    code: "https://github.com/houtaroudes/modern-fil-homes",
   },
   {
     id: "mediqueue",
@@ -205,9 +204,11 @@ function StoryDrawer({ project, onClose }) {
               <ArrowUpRight size={15} weight="Outline" aria-hidden="true" />
             </a>
           )}
-          <a className="story-btn" href={project.code} target="_blank" rel="noopener noreferrer">
-            View the code
-          </a>
+          {project.code && (
+            <a className="story-btn" href={project.code} target="_blank" rel="noopener noreferrer">
+              View the code
+            </a>
+          )}
         </div>
       </aside>
     </div>
