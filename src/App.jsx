@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Sun, Moon, ArrowUp, Envelope, Home, User, Briefcase, MessageCircle, Gamepad } from "reicon-react";
 // Decorative background - code-split so the shader stays out of the main bundle.
 const ContourBackground = lazy(() => import("./components/ContourBackground"));
-import ProjectsGrid from "./components/ProjectsGrid";
+import ProjectsGrid, { PROJECT_COUNT } from "./components/ProjectsGrid";
 import TechStack from "./components/TechStack";
 
 const IconGithub = ({ s = 16 }) => (
@@ -19,6 +19,7 @@ const EyebrowIcon = () => (
 import PixelTransition from "./components/PixelTransition";
 import GitHubHeatmap from "./components/GitHubHeatmap";
 import "./components/PixelTransition.css";
+import { TOTAL_TECH_SKILLS } from "./data/techStack";
 
 /* ===== Data ===== */
 const services = [
@@ -49,7 +50,6 @@ const NAV_ITEMS = [
 
 const SIDEBAR_SOCIALS = [
   { label: "GitHub", href: "https://github.com/houtaroudes" },
-  { label: "LinkedIn", href: "https://www.linkedin.com/" },
   { label: "Pixel Portfolio", href: "https://houtaroudes-game-portfolio.vercel.app" },
 ];
 
@@ -280,8 +280,8 @@ export default function PortfolioV2() {
 
   const handleNavClick = () => setSidebarOpen(false);
 
-  const { count: projectCount, ref: projectRef } = useCountUp(7);
-  const { count: skillCount, ref: skillRef } = useCountUp(10);
+  const { count: projectCount, ref: projectRef } = useCountUp(PROJECT_COUNT);
+  const { count: skillCount, ref: skillRef } = useCountUp(TOTAL_TECH_SKILLS);
 
   return (
     <>

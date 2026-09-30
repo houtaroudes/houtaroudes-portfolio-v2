@@ -560,11 +560,81 @@ footer{border-top:1px solid var(--border);padding:34px var(--container-x);text-a
 }
 .prj-card:hover .prj-shot img{transform:scale(1.03)}
 
+/* Cards that carry a build story sit in a wrapper so the grid child stays
+   the card itself when there is no story (keeps one DOM shape per card type). */
+.prj-cardwrap{position:relative;display:flex;flex-direction:column}
+.prj-cardwrap .prj-card{flex:1}
+.prj-cardwrap--flag{grid-column:1/-1}
+.prj-cardwrap--flag .prj-card{flex-direction:row;align-items:center;gap:26px}
+.prj-cardwrap--flag .prj-shot{flex:1.15;max-width:46%}
+.prj-story-btn{
+  margin-top:12px;align-self:flex-start;
+  display:inline-flex;align-items:center;gap:7px;
+  padding:0;border:0;background:none;cursor:pointer;
+  font-family:var(--font-display);font-size:0.8rem;font-weight:600;
+  color:var(--ink);border-bottom:2px solid var(--orange);
+  padding-bottom:3px;
+  transition:color .2s;
+}
+.prj-story-btn::after{content:"\2192";color:var(--orange);transition:transform .25s var(--ease-out)}
+.prj-story-btn:hover{color:var(--orange)}
+.prj-story-btn:hover::after{transform:translateX(3px)}
+.prj-story-btn:focus-visible{outline:2px solid var(--orange);outline-offset:3px}
+
+/* Build-story drawer: slides from the right over a dim scrim. */
+/* z-index 100 keeps the scrim above the scroll-to-top button (90) and the
+   sidebar (85). At 80 the button floated over the panel and covered the
+   secondary action on phones. */
+.story-overlay{position:fixed;inset:0;z-index:100;background:rgba(11,30,63,0.55);animation:story-fade .25s ease}
+@keyframes story-fade{from{opacity:0}to{opacity:1}}
+.story-panel{
+  position:absolute;top:0;right:0;height:100%;width:min(520px,100%);
+  display:flex;flex-direction:column;gap:16px;
+  background:var(--bg-card);border-left:1px solid var(--border);
+  padding:56px 34px 34px;overflow-y:auto;
+  box-shadow:-30px 0 70px -30px rgba(11,30,63,0.6);
+  animation:story-in .3s var(--ease-out);outline:none;
+}
+@keyframes story-in{from{transform:translateX(40px);opacity:0}to{transform:none;opacity:1}}
+.story-close{
+  position:absolute;top:18px;right:18px;
+  width:36px;height:36px;border-radius:50%;
+  display:inline-flex;align-items:center;justify-content:center;
+  border:1px solid var(--border-strong);background:none;color:var(--muted);cursor:pointer;
+  transition:border-color .2s,color .2s,transform .2s;
+}
+.story-close:hover{border-color:var(--orange);color:var(--orange);transform:rotate(90deg)}
+.story-close:focus-visible{outline:2px solid var(--orange);outline-offset:3px}
+.story-title{font-family:var(--font-display);font-size:1.5rem;font-weight:800;letter-spacing:-0.02em;color:var(--ink)}
+.story-shot{display:block;border-radius:14px;overflow:hidden;border:1px solid var(--border);box-shadow:0 18px 44px -18px rgba(11,30,63,0.35)}
+.story-shot img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;object-position:top center}
+.story-block{display:flex;flex-direction:column;gap:6px}
+.story-label{font-size:0.62rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--orange)}
+.story-block p{font-size:0.9rem;line-height:1.65;color:var(--ink)}
+.story-proof{display:flex;align-items:center;gap:8px;font-size:0.78rem;font-weight:600;color:var(--muted);border-top:1px solid var(--border);padding-top:14px}
+.story-proof svg{flex:none;color:var(--orange)}
+.story-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:auto;padding-top:8px}
+.story-btn{
+  display:inline-flex;align-items:center;gap:7px;
+  height:44px;padding:0 20px;border-radius:var(--radius-pill);
+  border:1px solid var(--border-strong);color:var(--ink);
+  font-family:var(--font-display);font-size:0.82rem;font-weight:600;
+  transition:border-color .2s,color .2s,transform .2s;
+}
+.story-btn:hover{border-color:var(--orange);color:var(--orange);transform:translateY(-2px)}
+.story-btn:focus-visible{outline:2px solid var(--orange);outline-offset:3px}
+.story-btn--primary{background:var(--navy);border-color:var(--navy);color:var(--cream)}
+.story-btn--primary svg{color:var(--orange)}
+.story-btn--primary:hover{color:var(--cream);border-color:var(--navy)}
+[data-theme="dark"] .story-btn--primary{background:#E9EDF5;border-color:#E9EDF5;color:#0B1E3F}
+[data-theme="dark"] .story-btn--primary:hover{color:#0B1E3F}
+
 @media (max-width:1180px){.prj-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:680px){
   .prj-grid{grid-template-columns:1fr}
-  .prj-card--flag{flex-direction:column;align-items:stretch}
-  .prj-card--flag .prj-shot{max-width:none}
+  .prj-card--flag,.prj-cardwrap--flag .prj-card{flex-direction:column;align-items:stretch}
+  .prj-card--flag .prj-shot,.prj-cardwrap--flag .prj-shot{max-width:none}
+  .story-panel{padding:52px 22px 24px}
   .prj-panel{padding:24px 12px 12px}
   .prj-hint{font-size:0.6rem;padding:5px 10px}
   /* The template drops its CTA on phones because the tab bar carries it; v2
