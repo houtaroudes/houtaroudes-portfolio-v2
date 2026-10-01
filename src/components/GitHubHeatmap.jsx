@@ -16,7 +16,12 @@ const GithubIcon = ({ s = 16 }) => (
   </svg>
 );
 
-export default function GitHubHeatmap({ username = "houtaroudes", year = new Date().getFullYear(), refreshMs = REFRESH_MS }) {
+export default function GitHubHeatmap({ username = "houtaroudes", year, refreshMs = REFRESH_MS }) {
+  // The chart year is state rather than a value sampled once at mount: a tab
+  // left open over New Year would otherwise keep showing, and keep re-fetching,
+  // the previous year. An explicit `year` prop pins it; without one it follows
+  // the clock and rolls over on the first refresh after the date changes.
+  const [activeYear, setActiveYear] = useState(() => year ?? new Date().getFullYear());
   const [data, setData] = useState(null);
   const [error, setError] = useState(false);
   const [refreshedAt, setRefreshedAt] = useState(null);
@@ -41,6 +46,10 @@ export default function GitHubHeatmap({ username = "houtaroudes", year = new Dat
         setData(json);
         setError(false);
         setRefreshedAt(Date.now());
+        if (year === undefined) {
+          const nowYear = new Date().getFullYear();
+          setActiveYear((prev) => (prev === nowYear ? prev : nowYear));
+        }
       } catch {
         if (!cancelled && !gotData) setError(true);
       }
@@ -79,11 +88,11 @@ export default function GitHubHeatmap({ username = "houtaroudes", year = new Dat
       stopTimer();
       document.removeEventListener("visibilitychange", onVisibilityChange);
     };
-  }, [username, refreshMs]);
+  }, [username, refreshMs, year]);
 
   const { weeks, monthLabels, longestStreak, total } = useMemo(() => {
     if (!data) return { weeks: [], monthLabels: [], longestStreak: 0, total: 0 };
-    const days = (data.contributions || []).filter((d) => d.date.startsWith(String(year)));
+    const days = (data.contributions || []).filter((d) => d.date.startsWith(String(activeYear)));
     if (!days.length) return { weeks: [], monthLabels: [], longestStreak: 0, total: 0 };
 
     // Pad the first week so columns align with weekdays (Sunday first).
@@ -114,8 +123,8 @@ export default function GitHubHeatmap({ username = "houtaroudes", year = new Dat
     });
 
     const totalFromDays = days.reduce((a, d) => a + d.count, 0);
-    return { weeks: wks, monthLabels: labels, longestStreak: best, total: data.total?.[String(year)] ?? totalFromDays };
-  }, [data, year]);
+    return { weeks: wks, monthLabels: labels, longestStreak: best, total: data.total?.[String(activeYear)] ?? totalFromDays };
+  }, [data, activeYear]);
 
   if (error) {
     return (
@@ -141,7 +150,7 @@ export default function GitHubHeatmap({ username = "houtaroudes", year = new Dat
             title={refreshedAt ? `Last refreshed ${new Date(refreshedAt).toLocaleTimeString()}` : undefined}
           >
             <span>
-              <strong>{total}</strong> contributions in {year}
+              <strong>{total}</strong> contributions in {activeYear}
             </span>
             <span className="gh-stat-sep">·</span>
             <span>
