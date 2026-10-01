@@ -1,0 +1,51 @@
+# Runs the checks that have caught real problems in this repo: a vulnerable
+# transitive dependency, a lint break, and a build that will not compile. The
+# build is the important one, because a broken build is what takes the live
+# site down, and it fails on the same Vite version Vercel uses.
+name: CI
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+
+# A push that supersedes an earlier one makes the earlier run pointless, so
+# cancel it instead of paying for both.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Audit, lint and build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      # npm ci, not npm install: it installs exactly what package-lock.json
+      # pins, so CI cannot pass on a version the lock file does not describe.
+      - name: Install dependencies
+        run: npm ci
+
+      # Fails only on moderate or worse, so low-severity noise cannot block a
+      # deploy on its own. Warnings above that level are still printed.
+      - name: Audit dependencies
+        run: npm audit --audit-level=moderate
+
+      - name: Lint
+        run: npm run lint
+
+      # Same command Vercel runs, so a green run here means the deploy will
+      # build.
+      - name: Build
+        run: npm run build
