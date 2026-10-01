@@ -1,5 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 
+// The upstream API caches and GitHub's own graph lags, so asking more often
+// than this only produces identical answers. Overridable for tests.
+const REFRESH_MS = 15 * 60 * 1000;
+
+// Returning to the tab refreshes right away, but not more often than this, so
+// flicking between windows cannot turn into one request per alt-tab.
+const MIN_REFRESH_GAP_MS = 30 * 1000;
+
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 const GithubIcon = ({ s = 16 }) => (
@@ -8,24 +16,70 @@ const GithubIcon = ({ s = 16 }) => (
   </svg>
 );
 
-export default function GitHubHeatmap({ username = "houtaroudes", year = new Date().getFullYear() }) {
+export default function GitHubHeatmap({ username = "houtaroudes", year = new Date().getFullYear(), refreshMs = REFRESH_MS }) {
   const [data, setData] = useState(null);
   const [error, setError] = useState(false);
+  const [refreshedAt, setRefreshedAt] = useState(null);
 
   useEffect(() => {
     let cancelled = false;
-    fetch(`https://github-contributions-api.jogruber.de/v4/${username}`)
-      .then((r) => (r.ok ? r.json() : Promise.reject(new Error("API error"))))
-      .then((json) => {
-        if (!cancelled) setData(json);
-      })
-      .catch(() => {
-        if (!cancelled) setError(true);
-      });
+    let timer = null;
+    // Kept in the effect closure rather than in state on purpose: once a chart
+    // has rendered, a later refresh that fails must leave it alone instead of
+    // swapping working data for the error card. Only a first load may do that.
+    let gotData = false;
+    let lastLoadAt = 0;
+
+    async function load() {
+      lastLoadAt = Date.now();
+      try {
+        const res = await fetch(`https://github-contributions-api.jogruber.de/v4/${username}`);
+        if (!res.ok) throw new Error("contributions API error");
+        const json = await res.json();
+        if (cancelled) return;
+        gotData = true;
+        setData(json);
+        setError(false);
+        setRefreshedAt(Date.now());
+      } catch {
+        if (!cancelled && !gotData) setError(true);
+      }
+    }
+
+    function startTimer() {
+      if (timer === null && refreshMs > 0) timer = setInterval(load, refreshMs);
+    }
+
+    function stopTimer() {
+      if (timer !== null) {
+        clearInterval(timer);
+        timer = null;
+      }
+    }
+
+    // Polling a background tab is pure waste, so the timer only runs while the
+    // page is visible. Coming back into view refreshes straight away rather
+    // than waiting out whatever is left of the interval, but only once the data
+    // is genuinely getting old, so flicking between windows stays cheap.
+    function onVisibilityChange() {
+      if (document.visibilityState === "visible") {
+        if (Date.now() - lastLoadAt > MIN_REFRESH_GAP_MS) load();
+        startTimer();
+      } else {
+        stopTimer();
+      }
+    }
+
+    load();
+    if (document.visibilityState === "visible") startTimer();
+    document.addEventListener("visibilitychange", onVisibilityChange);
+
     return () => {
       cancelled = true;
+      stopTimer();
+      document.removeEventListener("visibilitychange", onVisibilityChange);
     };
-  }, [username]);
+  }, [username, refreshMs]);
 
   const { weeks, monthLabels, longestStreak, total } = useMemo(() => {
     if (!data) return { weeks: [], monthLabels: [], longestStreak: 0, total: 0 };
@@ -82,7 +136,10 @@ export default function GitHubHeatmap({ username = "houtaroudes", year = new Dat
           <GithubIcon s={16} /> @{username}
         </a>
         {data && (
-          <div className="gh-heatmap-stats">
+          <div
+            className="gh-heatmap-stats"
+            title={refreshedAt ? `Last refreshed ${new Date(refreshedAt).toLocaleTimeString()}` : undefined}
+          >
             <span>
               <strong>{total}</strong> contributions in {year}
             </span>
