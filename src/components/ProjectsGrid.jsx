@@ -95,6 +95,20 @@ const PROJECTS = [
     code: "https://github.com/houtaroudes/mediqueue",
   },
   {
+    id: "kalendaryo",
+    kicker: "Booking product",
+    title: "Kalendaryo",
+    desc: "Appointment booking for small businesses: pick a service, take an open time, and it is held. Owners get a dashboard for services, hours and bookings, on Supabase Postgres with row level security.",
+    tags: ["React", "Vite", "Tailwind", "Supabase"],
+    logos: ["/icons/react.svg", "/icons/vite.svg", "/icons/tailwindcss.svg"],
+    code: "https://github.com/houtaroudes/kalendaryo",
+    story: {
+      problem: "Small businesses take bookings by chat and memory, so double bookings and no-shows are normal. A slot can be promised to two people at once and nobody knows until both arrive.",
+      approach: "I built a four step booking flow (service, time, details, done) with a real availability engine that walks opening hours, subtracts what is taken and only offers times that finish before closing. The owner side edits services, prices and hours and sees every booking grouped by day. It runs on Supabase with row level security, and falls back to a seeded local store when no env vars are set so the flow works before a backend exists.",
+      proof: "10 tests pass on the pure slot logic, oxlint clean, production build green, and row level security proven in both directions",
+    },
+  },
+  {
     id: "more",
     kicker: "Everything else",
     title: "All Repositories",

@@ -16,7 +16,6 @@ export const DAILY_DRIVERS = [
   { name: "JavaScript", icon: "/icons/javascript.svg", color: "#F7DF1E" },
   { name: "Node.js", icon: "/icons/nodedotjs.svg", color: "#5FA04E" },
   { name: "PHP", icon: "/icons/php.svg", color: "#777BB4" },
-  { name: "Laravel", icon: "/icons/laravel.svg", color: "#FF2D20" },
   { name: "MySQL", icon: "/icons/mysql.svg", color: "#4479A1" },
   { name: "Tailwind CSS", icon: "/icons/tailwindcss.svg", color: "#06B6D4" },
   { name: "Vite", icon: "/icons/vite.svg", color: "#646CFF" },

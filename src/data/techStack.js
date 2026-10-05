@@ -6,7 +6,7 @@ export const TECH_GROUPS = [
   },
   {
     name: "Backend & Databases",
-    skills: ["Node.js", "tRPC", "PHP", "Laravel", "MySQL", "REST APIs", "WordPress"],
+    skills: ["Node.js", "tRPC", "PHP", "MySQL", "REST APIs"],
   },
   {
     name: "Tools & Platforms",
@@ -19,6 +19,6 @@ export const TECH_GROUPS = [
 ];
 
 /* Five tags shown on the work card; the rest live inside the modal. */
-export const TECH_STACK_PREVIEW = ["React", "TypeScript", "Laravel", "MySQL", "Tailwind CSS"];
+export const TECH_STACK_PREVIEW = ["React", "TypeScript", "Node.js", "MySQL", "Tailwind CSS"];
 
 export const TOTAL_TECH_SKILLS = TECH_GROUPS.reduce((sum, group) => sum + group.skills.length, 0);

@@ -5,6 +5,7 @@ import { Sun, Moon, ArrowUp, Envelope, Home, User, Briefcase, MessageCircle, Gam
 const ContourBackground = lazy(() => import("./components/ContourBackground"));
 import ProjectsGrid, { PROJECT_COUNT } from "./components/ProjectsGrid";
 import TechStack from "./components/TechStack";
+import BootIntro from "./components/BootIntro";
 
 const IconGithub = ({ s = 16 }) => (
   <svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -166,7 +167,7 @@ function Sidebar({ active, onNavigate, open, dark, onToggleTheme }) {
             <path d="M10.6 15.9l-3.3-3.3 1.3-1.3 2 2 4.8-4.8 1.3 1.3z" fill="#fff" stroke="none" />
           </svg>
         </h2>
-        <p className="sidebar-handle">@houtaroudes · Full-Stack Dev</p>
+        <p className="sidebar-handle">@houtaroudes · Student Full-Stack Dev</p>
       </div>
       <div className="sidebar-socials">
         {SIDEBAR_SOCIALS.map((s) => (
@@ -285,6 +286,9 @@ export default function PortfolioV2() {
 
   return (
     <>
+      {/* Loading intro: overlays until the hero has painted, then lifts. */}
+      <BootIntro />
+
       {/* Animated background */}
       <Suspense fallback={null}>
         <ContourBackground />
@@ -322,10 +326,9 @@ export default function PortfolioV2() {
 
       {/* Home - Projects showcase (BrewedOps style) */}
       <section className="hero" id="home">
-        <svg className="hero-doodles" aria-hidden="true" preserveAspectRatio="none" viewBox="0 0 1200 800">
-          <path d="M-80 620 C 260 300, 620 760, 1280 320" />
-          <path d="M300 -60 C 520 240, 980 120, 1300 420" />
-        </svg>
+        {/* The static doodle SVG that used to sit here was removed: it drew two
+            fixed hairlines across the hero that read as a stray line because
+            they did not move, while the contour background does. */}
         <div className="hero-content">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
@@ -352,9 +355,10 @@ export default function PortfolioV2() {
               turning ideas into interactive experiences, one commit at a time.
             </p>
             <p className="about-text reveal reveal-delay-2">
-              I specialize in full-stack development with Laravel, WordPress, and React. I love the
-              whole journey: sketching the idea, building it out, and shipping it live. When I'm not
-              coding, I'm probably tweaking this portfolio or pushing commits at 2 AM.
+              I just love building software. React on the front end, Node or PHP on the back, and a
+              real database underneath. I care about the whole journey: sketching the idea, building
+              it out, and shipping it live. When I'm not coding, I'm probably tweaking this
+              portfolio or pushing commits at 2 AM.
             </p>
             <div className="about-stats reveal reveal-delay-3">
               <div>

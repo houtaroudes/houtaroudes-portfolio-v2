@@ -61,6 +61,138 @@ h1,h2,h3,h4{font-family:var(--font-display);line-height:1.15;letter-spacing:-0.0
   --shadow-card:0 10px 30px -12px rgba(0,0,0,0.45);
 }
 
+/* ===== Loading intro =====
+   A workflow diagram that assembles itself: nodes drop in, the cable between
+   each pair goes live in orange with a glow, a dot runs down it, a green check
+   lands, and the status line pulses then settles to green.
+
+   The overlay is pointer-events:none on purpose, so it can never swallow a
+   click during the roughly one second it is up. Everything is driven from the
+   step timings in BootIntro.jsx; the CSS only describes the two states.
+
+   The --n8n-* names are kept from the reference because the diagram reads as
+   a node graph and those four values are the whole palette of one. */
+.boot{
+  position:fixed;inset:0;z-index:9000;pointer-events:none;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:clamp(28px,6vh,64px);
+  background:var(--bg);color:var(--ink);
+  --n8n-node:var(--white);
+  --n8n-border:rgba(11,30,63,0.22);
+  --n8n-cable:rgba(11,30,63,0.28);
+  --n8n-ok:#22A15C;
+  --n8n-ink:var(--navy);
+  transition:opacity .6s var(--ease-out),visibility .6s var(--ease-out);
+}
+[data-theme="dark"] .boot{
+  --n8n-node:#0D1B33;
+  --n8n-border:rgba(233,237,245,0.24);
+  --n8n-cable:rgba(233,237,245,0.3);
+  --n8n-ok:#3DBA74;
+  --n8n-ink:#E9EDF5;
+}
+.boot--leaving{opacity:0;visibility:hidden}
+
+/* --- Name: each word rises out of its own mask --- */
+.boot-title{
+  display:flex;flex-wrap:wrap;justify-content:center;column-gap:.28em;
+  font-family:var(--font-display);font-weight:700;
+  font-size:clamp(30px,5.2vw,64px);line-height:1.04;letter-spacing:-0.03em;
+  color:var(--navy);
+}
+[data-theme="dark"] .boot-title{color:var(--ink)}
+/* vertical padding plus matching negative margin keeps descenders uncut
+   while the mask still clips the word as it travels up */
+.boot-word{
+  display:block;overflow:hidden;white-space:pre;
+  padding:.22em 0 .1em;margin:-.22em 0 -.1em;
+}
+.boot-word-in{display:block;transform:translateY(128%);animation:bootWordUp .8s var(--ease-out) forwards}
+@keyframes bootWordUp{to{transform:none}}
+
+/* --- Diagram --- */
+.boot-canvas{
+  position:relative;display:flex;flex-direction:column;align-items:center;
+  gap:clamp(34px,7vh,54px);
+  opacity:0;animation:bootFade .5s var(--ease-out) .2s forwards;
+}
+@keyframes bootFade{to{opacity:1}}
+.boot-row{display:flex;align-items:center;gap:clamp(56px,13vw,150px)}
+.boot-cables{position:absolute;inset:0;overflow:visible;pointer-events:none}
+.boot-cable{
+  fill:none;stroke:var(--n8n-cable);stroke-width:2;stroke-linecap:round;opacity:0;
+  transition:stroke .3s var(--ease-out);
+}
+.boot-cable.is-live{stroke:var(--orange);opacity:1;filter:drop-shadow(0 0 4px rgba(242,107,29,.5))}
+
+/* the travelling dot: a horizontal run between two ports on the same baseline */
+.boot-dot{
+  position:absolute;width:8px;height:8px;margin:-4px 0 0 -4px;border-radius:50%;
+  background:var(--orange);box-shadow:0 0 0 3px rgba(242,107,29,.22),0 0 12px 2px rgba(242,107,29,.6);
+  animation:bootRun .72s var(--ease-out) forwards;
+}
+@keyframes bootRun{
+  0%{transform:translateX(0);opacity:0}
+  25%{opacity:1}
+  85%{opacity:1}
+  100%{transform:translateX(var(--span));opacity:0}
+}
+
+.boot-node{position:relative;width:42px;opacity:0;transform:translateY(10px) scale(.86)}
+.boot-node.is-in{opacity:1;transform:none;transition:opacity .34s var(--ease-out),transform .34s var(--ease-out)}
+.boot-node-card{
+  position:relative;display:grid;place-items:center;width:42px;height:42px;
+  border-radius:10px;background:var(--n8n-node);border:1.5px solid var(--n8n-border);
+  box-shadow:0 8px 18px -10px rgba(6,12,26,.5);
+  transition:border-color .26s var(--ease-out);
+}
+/* the first node is the trigger, so its left edge is fully rounded */
+.boot-node--trigger .boot-node-card{border-radius:21px 10px 10px 21px}
+/* The node glyph: muted while the step is pending, green once it completes,
+   matching the card border, the ports and the check. */
+.boot-node-icon{color:var(--n8n-cable);transition:color .26s var(--ease-out)}
+.boot-node.is-done .boot-node-card{border-color:var(--n8n-ok)}
+.boot-node.is-done .boot-node-icon{color:var(--n8n-ok)}
+.boot-node-port{
+  position:absolute;top:50%;width:7px;height:7px;border-radius:50%;
+  background:var(--n8n-node);border:1.5px solid var(--n8n-border);transform:translateY(-50%);
+  transition:border-color .26s var(--ease-out);
+}
+.boot-node-port--in{left:-5px}
+.boot-node-port--out{right:-5px}
+/* the trigger has no input, the last node has no output */
+.boot-node--trigger .boot-node-port--in{display:none}
+.boot-node:last-of-type .boot-node-port--out{display:none}
+.boot-node.is-done .boot-node-port{border-color:var(--n8n-ok)}
+.boot-node-check{
+  position:absolute;top:-6px;right:-6px;display:grid;place-items:center;
+  width:16px;height:16px;border-radius:50%;background:var(--n8n-ok);color:#fff;
+  box-shadow:0 0 0 2px var(--n8n-node);opacity:0;transform:scale(.3);
+  transition:opacity .3s var(--ease-out),transform .3s var(--ease-out);
+}
+.boot-node.is-done .boot-node-check{opacity:1;transform:scale(1)}
+.boot-node-label{
+  position:absolute;top:50px;left:50%;transform:translateX(-50%);white-space:nowrap;
+  font-family:var(--font-display);font-size:11px;font-weight:600;color:var(--n8n-ink);
+}
+
+.boot-status{
+  display:inline-flex;align-items:center;gap:7px;
+  font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--muted);
+}
+.boot-status-dot{width:6px;height:6px;border-radius:50%;background:var(--orange);animation:bootPulse .9s ease-in-out infinite}
+.boot-status.is-done{color:var(--n8n-ok)}
+.boot-status.is-done .boot-status-dot{background:var(--n8n-ok);animation:none}
+@keyframes bootPulse{0%,100%{opacity:.35}50%{opacity:1}}
+
+/* Reduced motion never sees this at all (the component returns null), but if it
+   is ever rendered the diagram should simply sit there rather than animate. */
+@media (prefers-reduced-motion: reduce){
+  .boot{display:none}
+}
+
+/* ===== Layout shell: fixed sidebar + main column ===== */
 /* ===== Layout shell: fixed sidebar + main column ===== */
 .main-col{margin-left:var(--sb-w);min-height:100vh}
 
@@ -165,11 +297,6 @@ h1,h2,h3,h4{font-family:var(--font-display);line-height:1.15;letter-spacing:-0.0
 
 /* ===== Hero - projects showcase ===== */
 .hero{position:relative;padding-top:clamp(48px,7vh,84px);overflow:hidden}
-.hero-doodles{
-  position:absolute;inset:0;width:100%;height:100%;
-  pointer-events:none;
-}
-.hero-doodles path{fill:none;stroke:var(--ink);stroke-opacity:0.08;stroke-width:1.6}
 .hero-content{
   max-width:var(--max-w);margin:0 auto;
   padding:0 var(--container-x) clamp(56px,8vh,96px);
