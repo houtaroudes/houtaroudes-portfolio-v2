@@ -1,4 +1,7 @@
-/* ===== Tech stack data (mirrors the GitHub profile README) ===== */
+/* ===== Tech stack data =====
+   Only tools actually in use are listed here. Laravel and WordPress were
+   removed because they are not, and the count below is derived so it keeps up.
+*/
 export const TECH_GROUPS = [
   {
     name: "Frontend & Core",

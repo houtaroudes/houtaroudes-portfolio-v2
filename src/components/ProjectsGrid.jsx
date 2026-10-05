@@ -28,7 +28,7 @@ const PROJECTS = [
     story: {
       problem: "Learning resources are passive: videos and docs you watch but never touch. It is hard to tell whether you can actually build anything.",
       approach: "I built a hub that treats practice like a game: 26+ exercises with live previews you can open in the browser, code challenges with instant feedback, and progress that unlocks as you go.",
-      proof: "23 commits on GitHub, deployed live on Vercel",
+      proof: "Public repo on GitHub, deployed live on Vercel",
     },
   },
   {
@@ -45,7 +45,7 @@ const PROJECTS = [
     story: {
       problem: "Subdivision landing pages are static galleries: rows of photos that give no feel for the place or the actual math of buying a lot.",
       approach: "I made the village itself the page: a generated 3D scene in Three.js that you fly through on scroll, a clickable 68-lot site plan, and a financing calculator with real Pag-IBIG vs bank numbers.",
-      proof: "17 commits on GitHub, deployed live on Vercel",
+      proof: "Public repo on GitHub, deployed live on Vercel",
     },
   },
   {
@@ -105,7 +105,7 @@ const PROJECTS = [
     story: {
       problem: "Small businesses take bookings by chat and memory, so double bookings and no-shows are normal. A slot can be promised to two people at once and nobody knows until both arrive.",
       approach: "I built a four step booking flow (service, time, details, done) with a real availability engine that walks opening hours, subtracts what is taken and only offers times that finish before closing. The owner side edits services, prices and hours and sees every booking grouped by day. It runs on Supabase with row level security, and falls back to a seeded local store when no env vars are set so the flow works before a backend exists.",
-      proof: "10 tests pass on the pure slot logic, oxlint clean, production build green, and row level security proven in both directions",
+      proof: "11 tests pass on the pure slot logic, oxlint clean, production build green, and the database proven to expose booking times while denying the customer columns",
     },
   },
   {
@@ -306,7 +306,7 @@ export default function ProjectsGrid() {
           </a>
         </div>
         <p className="prj-lede">
-          Everything here shipped. Open a card to walk through the work live.
+          Everything here shipped. Open a card for the build story, the code, or the live site.
         </p>
       </header>
 
