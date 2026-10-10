@@ -656,6 +656,7 @@ footer{border-top:1px solid var(--border);padding:34px var(--container-x);text-a
 }
 .prj-card:hover{transform:translateY(-4px);border-color:var(--orange);box-shadow:0 24px 54px -20px rgba(11,30,63,0.4)}
 .prj-card--flag{grid-column:1/-1;flex-direction:row;align-items:center;gap:26px}
+.prj-card--hl{grid-column:span 2}
 .prj-card-head{display:flex;flex-direction:column;gap:8px;flex:1;min-width:0}
 
 /* Stack marks share one ink (masked, not <img>) so near-black brand files
@@ -764,6 +765,8 @@ footer{border-top:1px solid var(--border);padding:34px var(--container-x);text-a
 @media (max-width:1180px){.prj-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:680px){
   .prj-grid{grid-template-columns:1fr}
+  /* The mid-size highlight becomes a plain full-width column card on phones. */
+  .prj-card--hl{grid-column:auto}
   .prj-card--flag,.prj-cardwrap--flag .prj-card{flex-direction:column;align-items:stretch}
   .prj-card--flag .prj-shot,.prj-cardwrap--flag .prj-shot{max-width:none}
   .story-panel{padding:52px 22px 24px}

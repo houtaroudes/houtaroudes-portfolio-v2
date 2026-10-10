@@ -11,7 +11,9 @@ import DailyDrivers from "./DailyDrivers";
 
    Random Web Dev is the flagship and St. Joseph Village is the second
    highlight: both span the full row and carry a real screenshot, the way
-   the template's wide cards carry their media.
+   the template's wide cards carry their media. PixCodes is the third
+   highlight: a screenshot card too, but two columns wide instead of the
+   whole row, so it sits between the wide cards and the plain stack.
 */
 const PROJECTS = [
   {
@@ -47,6 +49,18 @@ const PROJECTS = [
       approach: "I made the village itself the page: a generated 3D scene in Three.js that you fly through on scroll, a clickable 68-lot site plan, and a financing calculator with real Pag-IBIG vs bank numbers.",
       proof: "Public repo on GitHub, deployed live on Vercel",
     },
+  },
+  {
+    id: "pixcodes",
+    hl: true,
+    kicker: "Playable build",
+    title: "PixCodes",
+    desc: "A browser game about writing CSS: a rendered target, sixteen levels, and checks that grade your code against it in a sandboxed frame.",
+    tags: ["React", "Vite", "CSS", "Codemirror"],
+    logos: ["/icons/react.svg", "/icons/vite.svg", "/icons/css3.svg"],
+    demo: "https://site-7d4c5e9f5f5e44248af0691c372581ea.freebuff.page",
+    code: "https://github.com/houtaroudes/pixcodes",
+    shot: "/images/shot-pixcodes.png",
   },
   {
     id: "motion",
@@ -232,7 +246,7 @@ function StoryDrawer({ project, onClose }) {
 function ProjectCard({ project, onStory }) {
   const card = (
     <a
-      className={`prj-card${project.flag && !project.story ? " prj-card--flag" : ""}`}
+      className={`prj-card${project.flag && !project.story ? " prj-card--flag" : project.hl ? " prj-card--hl" : ""}`}
       href={project.demo || project.code}
       target="_blank"
       rel="noopener noreferrer"
